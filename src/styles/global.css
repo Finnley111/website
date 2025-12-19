@@ -180,6 +180,63 @@ h4 {
    4. SHARED SCRAPBOOK STYLES
    ========================================================================== */
 /* The main 'Paper' card look used for Bio and Work items */
+.bio-scrap {
+    position: relative;
+    background: var(--paper-color); /* Uses your warm off-white  */
+    padding: 40px 30px;
+    margin: 20px 0;
+    transform: rotate(-1.5deg); /* Subtle scrapbook tilt */
+    
+    /* This creates the jagged "torn" edges at the top and bottom */
+    /* Based on the polygon logic from your snippet */
+    clip-path: polygon(
+        0% 2%, 5% 0%, 10% 3%, 15% 1%, 20% 4%, 25% 1%, 30% 3%, 35% 0%, 40% 2%, 45% 1%, 50% 4%, 55% 2%, 60% 4%, 65% 1%, 70% 3%, 75% 0%, 80% 2%, 85% 4%, 90% 1%, 95% 3%, 100% 1%, 
+        100% 98%, 95% 100%, 90% 97%, 85% 99%, 80% 96%, 75% 100%, 70% 97%, 65% 99%, 60% 96%, 55% 98%, 50% 96%, 45% 99%, 40% 97%, 35% 100%, 30% 97%, 25% 99%, 20% 96%, 15% 98%, 10% 96%, 5% 100%, 0% 98%
+    );
+    
+    /* Since clip-path cuts off standard box-shadows, we use drop-shadow on a parent or filter */
+    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.15));
+    transition: transform 0.3s ease;
+
+    /* 1. Add the texture image */
+    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); 
+    
+    /* 2. Set the base color (this shows through the texture) */
+    background-color: var(--paper-color); 
+    
+    /* 3. This blend mode makes the texture "ink" into the color */
+    background-blend-mode: multiply;
+    
+    /* 4. Ensure the texture doesn't look tiled/repeated */
+    background-size: 400px; 
+    
+    /* 5. Add a subtle "grain" filter for extra graphics polish */
+    filter: drop-shadow(4px 6px 8px rgba(27, 27, 27, 0.15)) contrast(1.05) brightness(0.98);
+}
+
+.bio-scrap:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.bio-content {
+    font-family: "Courier New", Courier, monospace; /* Your typewriter font choice  */
+    color: #333;
+    line-height: 1.6;
+}
+
+.bio-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
+.bio-content strong {
+    background: rgba(0, 0, 0, 0.09); /* Subtle highlight for key terms */
+    padding: 0 4px;
+}
+
+
 .paper-cutout {
     background: var(--paper-color);
     padding: 25px;
