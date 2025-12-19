@@ -1,242 +1,250 @@
-@import "tailwindcss";
+/* ==========================================================================
+   1. IMPORTS & CONFIGURATION
+   ========================================================================== */
+/* Loads the Tailwind CSS engine for utility classes (like flex, p-4, etc.) */
+@import 'tailwindcss';
 
-
-@import "tailwindcss";
-
-/* 1. RANSOMIZER FONTS */
-@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Berkshire+Swash&family=Cabin:ital,wght@0,400..700;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Germania+One&family=Lobster&family=Pacifico&family=Rubik:ital,wght@0,300..900;1,300..900&family=Rye&family=Permanent+Marker&family=Patrick+Hand&display=swap');
+/* Imports hand-drawn and stylized fonts from Google Fonts for that scrapbook feel */
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Berkshire+Swash&family=Cabin:ital,wght@0,400..700;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Germania+One&family=Lobster&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&family=Rubik:ital,wght@0,300..900;1,300..900&family=Rye&display=swap');
 
 :root {
+    /* Global Variables: Change these hex codes to update colors site-wide */
     --font-heading: 'Permanent Marker', cursive;
     --font-body: 'Patrick Hand', cursive;
-    --paper-color: #f4f8fc;
-    --ink-color: #2c2c2c;
+    --paper-color: #fcfaf2;  /* Warm off-white used for paper elements */
+    --ink-color: #2c2c2c;    /* Dark charcoal color for main text */
+    --ransom-color: #060606; /* Deep black for the "Ransom Note" letters */
+    
+    /* Box Shadows: The '0px' or '8px' values control depth; change the '0.2' for opacity */
     --shadow-hard: 3px 3px 0px rgba(0,0,0,0.2);
+    --shadow-soft: 2px 4px 8px rgba(0,0,0,0.15);
 }
 
-body {
-    font-family: var(--font-body);
-    color: var(--ink-color);
-    /* UNSATURATED BABY BLUE GRAPH PAPER */
-    background-color: #e0eaf4; 
-    background-image:
-        linear-gradient(rgba(133, 158, 180, 0.4) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(133, 158, 180, 0.4) 1px, transparent 1px);
-    background-size: 20px 20px;
-    padding-bottom: 100px;
-    overflow-x: hidden;
-}
-
-/* 2. CORE RANSOMIZER LOGIC */
-.ts, .tw, .tc { display: inline-block; }
-.ts { line-height: normal; word-spacing: 0.7em; }
-.tc div { position: relative; padding: 0.1em 0.2em; line-height: 75%; }
-.tc div::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: -1; /* Behind the letter */
-}
-
-/* 3. INDIVIDUAL STYLES (mlvx-0 to mlvx-6) */
-.tc.mlvx-0 { filter: drop-shadow(-1px 1px 1px #666) }
-.tc.mlvx-0 div::before { background-image: url(https://www.ransomizer.com/img/texture/pwrAKPo.png); background-color: #0c8489; clip-path: polygon(7% 1%,95% 3%,100% 42%,93% 96%,4% 100%,0 79%); }
-.tc.mlvx-0 div { color: #fbffff; font-family: 'Crimson Pro', serif; transform: rotate(1deg); text-transform: uppercase; }
-
-.tc.mlvx-1 { filter: drop-shadow(1px -1px 1px #666) }
-.tc.mlvx-1 div::before { background-image: url(https://www.ransomizer.com/img/texture/6ILZOkO.png); background-color: #ce1126; clip-path: polygon(3% 4%,100% 5%,100% 37%,99% 95%,1% 100%,0 99%); }
-.tc.mlvx-1 div { color: #ffffff; font-family: 'Crimson Pro', serif; transform: rotate(-3deg); text-transform: lowercase; }
-
-.tc.mlvx-2 { filter: drop-shadow(1px 1px 1px #666) }
-.tc.mlvx-2 div::before { background-image: url(https://www.ransomizer.com/img/texture/omJifnt.png); background-color: #803f1d; clip-path: polygon(6% 0,95% 1%,100% 85%,94% 94%,4% 100%,0 77%); }
-.tc.mlvx-2 div { color: #ffffff; font-family: 'Cabin', serif; transform: rotate(-2deg); font-style: italic; text-transform: uppercase; }
-
-.tc.mlvx-3 { filter: drop-shadow(1px -1px 1px #666) }
-.tc.mlvx-3 div::before { background-image: url(https://www.ransomizer.com/img/texture/Tg0fOcU.png); background-color: #f9aa51; clip-path: polygon(2% 6%,98% 0,100% 37%,97% 98%,6% 95%,0 8%); }
-.tc.mlvx-3 div { color: #000000; font-family: 'Courier Prime', serif; transform: rotate(3deg); font-weight: bold; }
-
-.tc.mlvx-4 div::before { background-image: url(https://www.ransomizer.com/img/texture/jIHCf3i.png); background-color: #f8c83c; clip-path: polygon(5% 4%,100% 6%,100% 70%,97% 99%,1% 95%,0 60%); }
-.tc.mlvx-4 div { color: #000000; font-family: 'Crimson Pro', serif; transform: rotate(3deg); font-weight: bold; }
-
-.tc.mlvx-5 div::before { background-image: url(https://www.ransomizer.com/img/texture/1wxqouY.png); background-color: #d2a567; clip-path: polygon(0 1%,96% 6%,100% 14%,100% 94%,5% 93%,0 10%); }
-.tc.mlvx-5 div { color: #000000; font-family: 'Rubik', serif; font-weight: bolder; }
-
-.tc.mlvx-6 { filter: drop-shadow(1px -1px 1px #666) }
-.tc.mlvx-6 div::before { background-image: url(https://www.ransomizer.com/img/texture/EXlM455.png); background-color: #717732; clip-path: polygon(1% 1%,93% 5%,100% 25%,97% 93%,3% 99%,0 6%); }
-.tc.mlvx-6 div { color: #ffffff; font-family: 'Crimson Pro', serif; transform: rotate(-3deg); }
-
+/* ==========================================================================
+   2. GLOBAL RESETS & BASE STYLES
+   ========================================================================== */
 * {
+    /* Ensures padding/borders don't increase the total width of an element */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 html {
+    /* Makes anchor links (e.g., clicking 'Work' in nav) slide smoothly instead of jumping */
     scroll-behavior: smooth;
 }
 
-
-
-h1, h2, h3, .paper-btn, .sticker-btn {
-    font-family: var(--font-heading);
-    text-transform: uppercase;
+body {
+    font-family: var(--font-body);
+    color: var(--ink-color);
+    line-height: 1.5;
+    padding-bottom: 100px; /* Leaves space at the bottom so content isn't cramped */
+    overflow-x: hidden;    /* Prevents wobbly elements from causing a horizontal scrollbar */
+    
+    /* VINTAGE OFF-WHITE GRAPH PAPER BACKGROUND */
+    background-color: #fdfdfb; 
+    /* Two linear-gradients create the vertical and horizontal grid lines */
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px; /* Change this to make the graph squares larger or smaller */
 }
 
-/* Utility class for placeholders */
+h1, h2, h3, .sticker-btn {
+    font-family: var(--font-heading);
+    text-transform: uppercase; /* Forces all headings to be CAPITALIZED */
+}
+
+.container {
+    max-width: 1200px; /* Limits site width on giant monitors */
+    margin: 0 auto;    /* Centers the main content block */
+    padding: 20px;
+}
+
+/* Placeholder box used for images/visuals you haven't added yet */
 .placeholder-visual {
     background: #ddd;
     border: 2px dashed #999;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-heading);
     color: #666;
     height: 100%;
     width: 100%;
     min-height: 150px;
-    border-radius: 8px; /* Slightly rounded */
+    border-radius: 8px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+/* ==========================================================================
+   3. CONSOLIDATED RANSOMIZER LOGIC
+   ========================================================================== */
+/* Basic layout for the ransom note letters; they sit side-by-side */
+.ts, .tw, .tc { display: inline-block; }
+
+.ts { 
+    line-height: 1.1; 
+    word-spacing: 0.1em; /* Controls the space between whole words */
 }
 
-/* ================= SHARED SCRAPBOOK STYLES ================= */
+.tw {
+    display: flex;
+    flex-wrap: wrap; /* Allows name to break into two lines if the screen is too narrow */
+    gap: 2px;        /* Space between letters */
+}
 
-/* The core "wobbly paper" look */
+.tc {
+    display: inline-block;
+    margin: 1px; 
+}
+
+/* The actual letter container */
+.tc div { 
+    position: relative; 
+    padding: 0.1em 0.15em; /* Padding inside the paper cutout */
+    line-height: 1; 
+}
+
+/* This creates the 'paper' behind the letter using a pseudo-element */
+.tc div::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; /* Ensures the paper stays behind the ink */
+}
+
+/* INDIVIDUAL LETTER STYLES (0-6) 
+   - filter: Adds a shadow to the 'cutout'
+   - background-image: Pulls a paper texture from a URL
+   - clip-path: Defines the wobbly, hand-cut shape of the paper
+   - transform: rotate: Tilts the letter for a messy look
+*/
+.tc.mlvx-0 { filter: drop-shadow(-1px 1px 1px #666); }
+.tc.mlvx-0 div::before { background-image: url(https://www.ransomizer.com/img/texture/pwrAKPo.png); background-color: #0c8489; clip-path: polygon(7% 1%,95% 3%,100% 42%,93% 96%,4% 100%,0 79%); }
+.tc.mlvx-0 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(1deg); text-transform: uppercase; }
+
+/* ... Styles 1 through 6 follow the same logic with different shapes, colors, and rotations ... */
+.tc.mlvx-1 { filter: drop-shadow(1px -1px 1px #666); }
+.tc.mlvx-1 div::before { background-image: url(https://www.ransomizer.com/img/texture/6ILZOkO.png); background-color: #ce1126; clip-path: polygon(3% 4%,100% 5%,100% 37%,99% 95%,1% 100%,0 99%); }
+.tc.mlvx-1 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(-3deg); text-transform: lowercase; }
+
+.tc.mlvx-2 { filter: drop-shadow(1px 1px 1px #666); }
+.tc.mlvx-2 div::before { background-image: url(https://www.ransomizer.com/img/texture/omJifnt.png); background-color: #803f1d; clip-path: polygon(6% 0,95% 1%,100% 85%,94% 94%,4% 100%,0 77%); }
+.tc.mlvx-2 div { color: var(--ransom-color); font-family: 'Cabin', serif; transform: rotate(-2deg); font-style: italic; text-transform: uppercase; }
+
+.tc.mlvx-3 { filter: drop-shadow(1px -1px 1px #666); }
+.tc.mlvx-3 div::before { background-image: url(https://www.ransomizer.com/img/texture/Tg0fOcU.png); background-color: #f9aa51; clip-path: polygon(2% 6%,98% 0,100% 37%,97% 98%,6% 95%,0 8%); }
+.tc.mlvx-3 div { color: var(--ransom-color); font-family: 'Courier Prime', serif; transform: rotate(3deg); font-weight: bold; }
+
+.tc.mlvx-4 div::before { background-image: url(https://www.ransomizer.com/img/texture/jIHCf3i.png); background-color: #f8c83c; clip-path: polygon(5% 4%,100% 6%,100% 70%,97% 99%,1% 95%,0 60%); }
+.tc.mlvx-4 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(3deg); font-weight: bold; }
+
+.tc.mlvx-5 div::before { background-image: url(https://www.ransomizer.com/img/texture/1wxqouY.png); background-color: #d2a567; clip-path: polygon(0 1%,96% 6%,100% 14%,100% 94%,5% 93%,0 10%); }
+.tc.mlvx-5 div { color: var(--ransom-color); font-family: 'Rubik', serif; font-weight: bolder; }
+
+.tc.mlvx-6 { filter: drop-shadow(1px -1px 1px #666); }
+.tc.mlvx-6 div::before { background-image: url(https://www.ransomizer.com/img/texture/EXlM455.png); background-color: #717732; clip-path: polygon(1% 1%,93% 5%,100% 25%,97% 93%,3% 99%,0 6%); }
+.tc.mlvx-6 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(-3deg); }
+
+/* ==========================================================================
+   4. SHARED SCRAPBOOK STYLES
+   ========================================================================== */
+/* The main 'Paper' card look used for Bio and Work items */
 .paper-cutout {
     background: var(--paper-color);
     padding: 25px;
     border: 3px solid var(--ink-color);
-    /* Irregular border radius creates the hand-cut look */
+    /* Complex border-radius creates the wobbly 'hand-cut' perimeter */
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     box-shadow: var(--shadow-soft);
-    transform: rotate(-1deg);
-    transition: transform 0.3s ease;
+    transform: rotate(-1deg); /* Slight tilt so it doesn't look like a perfect computer box */
+    transition: transform 0.3s ease; /* Smoothly straightens out when you hover */
 }
 
 .paper-cutout:hover {
-    transform: rotate(0deg) scale(1.01);
+    transform: rotate(0deg) scale(1.01); /* Straightens and grows slightly when hovered */
 }
 
-/* For boxes inside other boxes (like descriptions) */
+/* Use for nested boxes (like the description inside a work card) */
 .paper-cutout-inset {
     background: #fff;
     border: 2px solid var(--ink-color);
     border-radius: 15px 225px 15px 255px / 255px 15px 225px 15px;
     padding: 15px;
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05); /* Inset shadow makes it look sunken in */
 }
 
-.section-title {
-    text-align: center;
-    font-size: 3rem;
-    margin: 60px 0 40px;
-    transform: rotate(-2deg);
-    text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+/* ==========================================================================
+   5. COMPONENT SPECIFIC STYLES
+   ========================================================================== */
+
+/* NAVIGATION (Torn Paper Header) */
+header { padding: 20px 0 0; }
+
+.torn-paper-header {
+    width: 100%;
+    background-image: url('/torn-paper.png');
+    background-repeat: no-repeat;
+    
+    /* 1. ANCHOR TO BOTTOM: This ensures the ripped edge is the reference point */
+    background-position: bottom center; 
+    
+
+    height: clamp(50px, 23vh + 3vw, 200px); 
+    
+    /* 3. COVER: This ensures the image fills the 10vh height. 
+       Because we anchored to the 'bottom', the top of the paper 
+       will be what gets clipped off as the screen widens. */
+    background-size: cover; 
+    
+    position: relative;
+    top: 0;
+    z-index: 50;
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.1));
 }
 
-/* ================= HEADER & NAV ================= */
-header {
-    padding: 20px 0 0;
+/* The buttons sitting on the torn paper */
+.nav-label {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--ink-color);
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.4); /* Semi-transparent white backing */
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.nav-label:hover {
+    transform: rotate(-2deg) scale(1.1);
+    background: rgba(255, 255, 255, 0.9); /* Gets more solid on hover */
 }
 
 .scrap-nav ul {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    list-style: none;
-    flex-wrap: wrap;
+    gap: clamp(1rem, 5vw, 5rem); /* Space between nav items shrinks on mobile */
+    padding-top: clamp(20px, 2vh, 40px); /* Adjusts how far down the paper the buttons sit */
 }
 
-.paper-btn {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--ink-color);
-    background: var(--paper-color);
-    border: 3px solid var(--ink-color);
-    padding: 10px 25px;
-    font-size: 1.2rem;
-    /* Different wobbly shape for buttons */
-    border-radius: 30px 60px 40px 70px / 60px 30px 70px 40px;
-    box-shadow: var(--shadow-hard);
-    transition: all 0.2s ease;
-}
-
-/* Slight random rotations for nav items */
-.scrap-nav li:nth-child(odd) .paper-btn { transform: rotate(2deg); }
-.scrap-nav li:nth-child(even) .paper-btn { transform: rotate(-1.5deg); }
-
-.paper-btn:hover {
-    transform: rotate(0deg) scale(1.1) !important;
-    box-shadow: 1px 1px 0px rgba(0,0,0,0.2);
-}
-
-/* Wavy CSS Divider generated using radial gradients */
-.wavy-divider {
-    height: 20px;
-    width: 100%;
-    margin-top: 25px;
-    background-image: radial-gradient(circle at 10px -5px, transparent 12px, var(--ink-color) 13px, transparent 14px);
-    background-size: 20px 20px;
-    transform: rotate(180deg); /* Flip it so waves point down */
-}
-
-
-/* ================= HERO SECTION ================= */
-.hero-section {
-    margin-top: 40px;
-}
-
+/* HERO SECTION */
+.hero-section { margin-top: 40px; }
 .hero-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Stack on mobile */
+    grid-template-columns: 1fr; /* Default: stack image and bio on top of each other */
     gap: 40px;
     align-items: center;
 }
 
-/* Profile Image frame */
 .profile-image-container {
     height: 400px;
     transform: rotate(2deg);
+    overflow: hidden; /* Clips the photo into the wobbly paper shape */
 }
 
-/* The Cutout Name "Stickers" */
-.cutout-name {
-    font-size: 4rem;
-    line-height: 1.1;
-    margin-bottom: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    justify-content: center;
-}
-
-/* Styling individual letters as stickers */
-.cutout-name span {
-    display: inline-block;
-    background: #fff;
-    border: 3px solid var(--ink-color);
-    padding: 5px 10px;
-    box-shadow: var(--shadow-hard);
-    /* Randomize the sticker shapes */
-    border-radius: 15% 30% 20% 40%;
-}
-
-/* Apply random rotations to letters */
-.cutout-name span:nth-child(3n+1) { transform: rotate(-5deg) translateY(-5px); }
-.cutout-name span:nth-child(3n+2) { transform: rotate(3deg) translateY(5px); }
-.cutout-name span:nth-child(3n+3) { transform: rotate(-2deg); }
-
-
-.bio-box h3 {
-    margin-bottom: 10px;
-}
-
-/* Fake wavy underlines for bio */
+/* The 'Wavy' underlines in the Bio section */
 .wavy-text-lines {
     font-family: var(--font-body);
     font-size: 1.3rem;
@@ -244,175 +252,83 @@ header {
     text-decoration-line: underline;
     text-decoration-style: wavy;
     text-decoration-color: #999;
-    text-underline-offset: 8px;
+    text-underline-offset: 8px; /* Moves the wave further down from the text */
 }
 
-.hero-ctas {
-    margin-top: 30px;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
+/* Button style for CV and LinkedIn */
 .sticker-btn {
     font-size: 1.5rem;
     padding: 12px 30px;
     background: #fff;
     border: 4px solid var(--ink-color);
     border-radius: 10px;
-    box-shadow: 5px 5px 0px var(--ink-color);
+    box-shadow: 5px 5px 0px var(--ink-color); /* Hard 'sticker' shadow */
     cursor: pointer;
     transform: rotate(-3deg);
     transition: all 0.1s ease;
 }
-.sticker-btn:last-child { transform: rotate(2deg); }
 
 .sticker-btn:hover {
+    /* Moves the button down/right so it looks like you actually 'clicked' it down */
     transform: translate(2px, 2px) rotate(0deg);
     box-shadow: 2px 2px 0px var(--ink-color);
 }
 
+/* WORK EXPERIENCE */
+.experience-list { display: flex; flex-direction: column; gap: 30px; }
+.experience-item { display: flex; flex-direction: column; gap: 20px; }
+.exp-visual { height: 200px; }
 
-/* ================= WORK EXPERIENCE ================= */
-.experience-list {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.experience-item {
-    display: flex;
-    flex-direction: column; /* Stack on mobile */
-    gap: 20px;
-}
-
-.exp-visual {
-    height: 200px;
-}
-
-.exp-details {
-    flex-grow: 1;
-}
-
-.exp-details h3 {
-    margin-bottom: 10px;
-    font-size: 1.5rem;
-}
-.descr-box {
-    min-height: 120px;
-}
-
-/* ================= PROJECTS ================= */
+/* PROJECTS (Polaroid effect) */
 .projects-grid {
     display: grid;
-    /* Responsive grid: at least 250px wide, fit as many as possible */
+    /* auto-fit makes the grid responsive; minmax(280px) ensures cards don't get too skinny */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     padding: 20px;
 }
 
-/* Polaroid style for projects */
 .polaroid {
     background: #fff;
-    padding: 15px 15px 40px 15px; /* More padding at bottom for the polaroid look */
+    padding: 15px 15px 40px 15px; /* Extra padding at bottom for the 'Polaroid' label space */
     box-shadow: var(--shadow-soft);
-    border: 2px solid #ddd;
-    transform: rotate(var(--rotation));
+    border: 1px solid #ddd;
+    transform: rotate(var(--rotation)); /* Uses custom rotations defined below */
     transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0.3s ease;
     position: relative;
 }
 
-/* Randomize polaroid rotations */
+/* Randomize polaroid rotations for variety */
 .polaroid:nth-child(odd) { --rotation: 2deg; }
 .polaroid:nth-child(even) { --rotation: -1.5deg; }
-.polaroid:nth-child(3n) { --rotation: 3deg; }
 
 .polaroid:hover {
     transform: scale(1.05) rotate(0deg);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    z-index: 10; /* Bring to front on hover */
+    z-index: 10; /* Ensures the hovered card overlaps others */
 }
 
+/* CONTACT SECTION */
+.contact-sheet { max-width: 600px; margin: 0 auto; transform: rotate(1deg); }
+.contact-row { display: flex; align-items: center; margin-bottom: 20px; font-size: 1.4rem; }
+.contact-row .label { flex-basis: 40%; text-align: right; padding-right: 20px; }
+.contact-row .value { flex-basis: 60%; position: relative; padding-bottom: 5px; }
 
-/* ================= CONTACT ================= */
-.contact-sheet {
-    max-width: 600px;
-    margin: 0 auto;
-    transform: rotate(1deg);
-}
-
-.contact-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-}
-
-.label {
-    flex-basis: 40%;
-    text-align: right;
-    padding-right: 20px;
-}
-
-.value {
-    flex-basis: 60%;
-}
-
-/* The squiggly lines next to contact info */
-.wavy-line-placeholder {
-    position: relative;
-    padding-bottom: 5px;
-}
-.wavy-line-placeholder::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%232c2c2c' stroke-width='2' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-}
-
-
-/* ================= DESKTOP MEDIA QUERIES ================= */
+/* ==========================================================================
+   6. RESPONSIVE QUERIES (Desktop specific)
+   ========================================================================== */
 @media (min-width: 768px) {
-    /* Hero section goes side-by-side */
-    .hero-grid {
-        grid-template-columns: 4fr 6fr;
-        gap: 60px;
+    .hero-grid { 
+        /* On desktop, put photo and bio side-by-side */
+        grid-template-columns: 4fr 6fr; 
+        gap: 60px; 
     }
+    .hero-content { text-align: left; }
+    .hero-ctas { justify-content: flex-start; }
     
-    .hero-content {
-        text-align: left;
+    .experience-item { 
+        flex-direction: row; /* Puts experience visuals and details side-by-side */
+        align-items: flex-start; 
     }
-    
-    .cutout-name {
-        justify-content: flex-start;
-        font-size: 5rem;
-    }
-
-    .hero-ctas {
-        justify-content: flex-start;
-    }
-
-    /* Work experience goes side-by-side */
-    .experience-item {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-    .exp-visual {
-        flex-basis: 35%;
-        height: auto;
-        aspect-ratio: 4/3; /* Keep visual squarish */
-    }
-
-    /* Slightly rotate experience items alternately */
-    .experience-item:nth-child(even) {
-        transform: rotate(1deg);
-    }
-    .experience-item:nth-child(odd) {
-        transform: rotate(-0.5deg);
-    }
+    .exp-visual { flex-basis: 35%; height: auto; aspect-ratio: 4/3; }
 }
