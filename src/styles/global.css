@@ -11,7 +11,7 @@
     /* Global Variables: Change these hex codes to update colors site-wide */
     --font-heading: "Courier New", monospace;
     --font-body: "Courier New", monospace;
-    --paper-color: #fcfaf2;  /* Warm off-white used for paper elements */
+    --paper-color: #f2f3fc;  /* Warm off-white used for paper elements */
     --ink-color: #2c2c2c;    /* Dark charcoal color for main text */
     --ransom-color: #060606; /* Deep black for the "Ransom Note" letters */
     
@@ -43,7 +43,7 @@ body {
     overflow-x: hidden;    /* Prevents wobbly elements from causing a horizontal scrollbar */
     
     /* VINTAGE OFF-WHITE GRAPH PAPER BACKGROUND */
-    background-color: #ffffef65; 
+    background-color: #d4ecff65; 
     /* Two linear-gradients create the vertical and horizontal grid lines */
     background-image:
         linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
