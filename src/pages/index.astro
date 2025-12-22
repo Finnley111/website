@@ -18,10 +18,9 @@ import Sticker from '../components/Sticker.jsx';
 </head>
 <body>
 
-    <header class="torn-paper-header">
+<header class="torn-paper-header">
     <nav class="scrap-nav">
-        <ul class="flex justify-center gap-8 pt-6">
-            <li><a href="#about" class="nav-label">About</a></li>
+        <ul class="flex justify-center gap-10 pt-12">
             <li><a href="#work" class="nav-label">Work</a></li>
             <li><a href="#projects" class="nav-label">Projects</a></li>
             <li><a href="#contact" class="nav-label">Contact</a></li>
@@ -111,31 +110,45 @@ import Sticker from '../components/Sticker.jsx';
 
         <section id="projects" class="section-pad">
             <h2 class="section-header-white-scrap">Projects</h2>
-            <div class="projects-grid">
-                <div class="polaroid">
-                    <div>
-						<img src="/WaterScene.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover"/>
-					</div>
-                </div>
+            <div class="projects-grid masonry-grid max-w-4xl mx-auto">
+            <div class="project-card polaroid">
+				<div class="polaroid-container">
+					<img src="/WaterScene.png" alt="Manifold 3D Visualization" class="polaroid-img"/>
+					<p class="polaroid-caption">Ray tracer using Taichi.</p>
+				</div>
+				</div>
                 <div class="project-card polaroid">
-                    <div>
-						<video 
-							src="/bunny.mp4" 
-							autoplay 
-							muted 
-							loop 
-							playsinline 
-							style="width: 100%; height: 100%; object-fit: cover;"
-						>
-							Your browser does not support the video tag.
-						</video>
-					</div>
-                </div>
-                <div class="project-card polaroid">
-                    <div>
-						<img src="/confusion_matrix.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover"/>
-					</div>
-                </div>
+			<div class="polaroid-container">
+				<video 
+					src="/bunny.mp4" 
+					autoplay 
+					muted 
+					loop 
+					playsinline 
+					class="polaroid-img"
+					style="object-fit: cover;"
+				>
+					Your browser does not support the video tag.
+				</video>
+				<p class="polaroid-caption">
+					Mesh simplification using quadratic error.
+				</p>
+			</div>
+		</div>
+
+		<div class="project-card polaroid">
+			<div class="polaroid-container">
+				<img 
+					src="/confusion_matrix.png" 
+					alt="ML Model Validation" 
+					class="polaroid-img"
+					style="object-fit: cover;"
+				/>
+				<p class="polaroid-caption">
+					Benchmarking scratch-built MLPs against CNNs on medical image classification.
+				</p>
+			</div>
+		</div>
             </div>
         </section>
 

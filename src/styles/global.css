@@ -222,15 +222,12 @@ header { padding: 20px 0 0; }
     background-blend-mode: hue;
     background-repeat: no-repeat;
     
-    /* 1. ANCHOR TO BOTTOM: This ensures the ripped edge is the reference point */
+
     background-position: bottom center; 
     
 
     height: clamp(50px, 23vh + 3vw, 200px); 
     
-    /* 3. COVER: This ensures the image fills the 10vh height. 
-       Because we anchored to the 'bottom', the top of the paper 
-       will be what gets clipped off as the screen widens. */
     background-size: cover; 
     
     position: relative;
@@ -243,45 +240,9 @@ header { padding: 20px 0 0; }
 .scrap-nav ul {
     display: flex;
     justify-content: center;
-    gap: clamp(1rem, 5vw, 5rem); /* Space between nav items shrinks on mobile */
-    padding-top: clamp(20px, 2vh, 40px); /* Adjusts how far down the paper the buttons sit */
+    gap: clamp(1rem, 5vw, 5rem);
+    padding-top: clamp(20px, 2vh, 40px);
 }
-
-/* The buttons sitting on the torn paper */
-/* .nav-label {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--ink-color);
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    padding: 4px 12px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    color: #060606;
-} */
-
-/* .nav-label:hover {
-    transform: rotate(-2deg) scale(1.1);
-    background: rgba(255, 255, 255, 0.9);
-    color: #060606;
-} */
-
-/* .nav-label {
-    display: inline-block;
-    text-decoration: underline;
-    color: #0000EE;
-    font-family: "Courier Prime", monospace; 
-    font-size: 1.2rem;
-    background: none; 
-    transition: color 0.2s ease;
-} */
-
-/* .nav-label:hover {
-    color: #551A8B;
-    background: transparent;
-    transform: translateY(-2px);
-} */
 
 .nav-label {
     display: inline-block;
@@ -289,43 +250,39 @@ header { padding: 20px 0 0; }
     font-family: var(--font-heading);
     font-size: 1.1rem;
     padding: 10px 18px;
-    
-    /* Vintage Keycap Colors */
+
     background: #e0e0e0; 
     color: #444;
     
-    /* The "Physical" Shape */
+
     border-radius: 6px 6px 4px 4px;
     border-top: 1px solid #fff;
     border-left: 1px solid #fff;
     
-    /* 3D EXTRUSION: Layered shadows create the key's side walls */
+
     box-shadow: 
         0px 2px 0px #bbb,
         0px 4px 0px #aaa,
         0px 6px 0px #999,
-        0px 8px 10px rgba(0,0,0,0.3); /* The drop shadow on the paper */
+        0px 8px 10px rgba(0,0,0,0.3);
         
     transition: all 0.1s ease;
     position: relative;
     top: 0;
 }
 
-/* THE "PRESS" EFFECT */
+
 .nav-label:active, .nav-label:hover {
-    /* Moves the key down to simulate a mechanical switch bottoming out */
+
     top: 4px; 
     box-shadow: 
         0px 1px 0px #bbb,
         0px 2px 0px #aaa,
         0px 2px 5px rgba(0,0,0,0.2);
-    
-    /* Optional: Use your signature Teal for the text on hover */
+
     color: #318282; 
 }
  
- 
-
 
 
 .section-pad {
@@ -585,17 +542,33 @@ header { padding: 20px 0 0; }
 .exp-visual { height: 200px; }
 
 /* PROJECTS (Polaroid effect) */
-.projects-grid {
-    display: grid;
-    /* auto-fit makes the grid responsive; minmax(280px) ensures cards don't get too skinny */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 20px;
+.project-card {
+    /* CRITICAL: Prevents the card from being sliced in half between columns */
+    break-inside: avoid-column;
+    page-break-inside: avoid; /* For older browser support */
+
+    /* Adds vertical space between cards in the same column */
+    margin-bottom: 2rem;
+
+    /* --- Keep your existing styles below --- */
+    border: 1px solid #ccc;
+    padding: 10px 10px 25px 10px;
+    background: white;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    /* Note: I removed the default rotation here so they stack cleanly,
+       but kept the hover effect below. Add transform: rotate(...) back here if you want them permanently tilted. */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Keep existing hover effect */
+.project-card:hover {
+    transform: scale(1.03) rotate(0deg) !important;
+    box-shadow: 10px 10px 25px rgba(0,0,0,0.3);
+    z-index: 10;
+}
 .polaroid {
     background: #fff;
-    padding: 25px 15px 50px 15px; /* Extra padding at bottom for the 'Polaroid' label space */
+    padding: 25px 15px 10px 15px; /* Extra padding at bottom for the 'Polaroid' label space */
     box-shadow: var(--shadow-soft);
     border: 1px solid #ddd;
     transform: rotate(var(--rotation)); /* Uses custom rotations defined below */
@@ -606,6 +579,50 @@ header { padding: 20px 0 0; }
 /* Randomize polaroid rotations for variety */
 .polaroid:nth-child(odd) { --rotation: 3deg; }
 .polaroid:nth-child(even) { --rotation: -1.5deg; }
+
+/* Ensures the image and caption are stacked correctly */
+.polaroid-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.polaroid-img {
+    width: 100%;
+    height: auto; /* Allow natural height based on the image source */
+    display: block;
+    border-bottom: 1px solid #eee;
+}
+
+/* --- NEW MASONRY LAYOUT CONTAINER --- */
+/* Add this new class to handle the column layout */
+.masonry-grid {
+    /* Default to 1 column on mobile */
+    column-count: 1;
+    column-gap: 2rem; /* Matches your previous gap-8 */
+    width: 100%;
+}
+
+/* On larger screens, switch to 3 columns */
+@media (min-width: 768px) {
+    .masonry-grid {
+        column-count: 3;
+    }
+}
+/* Styling for the description text */
+.polaroid-caption {
+  /* Option 1: Handwritten Style (Default) */
+  font-family: "Courier";
+
+  /* Option 2: Typewriter Style (Uncomment to use) */
+  /* font-family: 'Courier New', Courier, monospace; font-weight: bold; */
+
+  color: #444; /* A soft, ink-like dark grey */
+  font-size: 1.1rem;
+  text-align: center; /* Centers the text below the image */
+  margin: 15px 0 5px 0; /* Adds space above and below the caption */
+  padding: 0 10px; /* Prevents text from touching the edges */
+  line-height: 1.3;
+}
 
 /* .polaroid:hover {
     transform: scale(1.05) rotate(0deg);
@@ -635,7 +652,7 @@ header { padding: 20px 0 0; }
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color:#0b6d2c; /* The blue section */
+    background-color:#318282; /* The blue section */
     border-radius: 10px; /* Rounded edges */
     border: 2px solid transparent;
     background-clip: content-box;
