@@ -12,6 +12,9 @@ import Sticker from '../components/Sticker.jsx';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -30,63 +33,43 @@ import Sticker from '../components/Sticker.jsx';
         <section id="hero" class="hero-section">
             <div class="hero-grid">
 				<div class="polaroid">
-					<img src="/finnley.JPG" alt="Finnley Howald" style="width: 100%; height: auto; object-fit: cover;" />
+					<img src="/finnley4.jpg" alt="Finnley Howald" style="width: 100%; height: auto; object-fit: cover;" />
 					
 			</div>
 
                 <div class="hero-content">
-                    <h1 class="flex flex-col items-center md:items-start mb-8 w-full" style="font-size: clamp(30px, 5vw, 90px);">
-						<div class="ts mb-2">
-							<div class="tw flex flex-nowrap justify-center md:justify-start gap-1">
-							<div class="mlvx-0 tc"><div>F</div></div>
-							<div class="mlvx-1 tc"><div>i</div></div>
-							<div class="mlvx-2 tc"><div>n</div></div>
-							<div class="mlvx-3 tc"><div>n</div></div>
-							<div class="mlvx-4 tc"><div>l</div></div>
-							<div class="mlvx-5 tc"><div>e</div></div>
-							<div class="mlvx-6 tc"><div>y</div></div>
-							</div>
-						</div>
-
-						<div class="ts">
-							<div class="tw flex flex-wrap justify-center md:justify-start gap-1">
-							<div class="mlvx-0 tc"><div>H</div></div>
-							<div class="mlvx-3 tc"><div>o</div></div>
-							<div class="mlvx-1 tc"><div>w</div></div>
-							<div class="mlvx-4 tc"><div>a</div></div>
-							<div class="mlvx-2 tc"><div>l</div></div>
-							<div class="mlvx-6 tc"><div>d</div></div>
-							</div>
+                    <h1 class="w-full" style="font-size: clamp(30px, 5vw, 90px);">
+						<div>
+							<span id="Finnley">Finnley Howald</span>
 						</div>
 						</h1>
-                    <div class="bio-box bio-scrap">
+                    <div class="bio-box">
 						<div class="bio-content">
-							<h3>Bio</h3>
-							<p>
-								Hello! I'm Finnley, a Computer Science student at <strong>McGill University</strong>. My interests include <strong>Computer Graphics/Animation</strong>, <strong>Computational Biology</strong>, and <strong>AI</strong>. I have experience spanning from developing tools for Unreal Engine to creating biological models for cancer research.
-							</p>
+							<h5>
+								Hello! I'm Finnley, a Computer Science student at McGill University. My interests include <span id="Highlight">Visual Computing</span>, <span id="Highlight">Computational Biology</span>, and <span id="Highlight">AI</span>. My experience spans from developing tools for Unreal Engine to creating biological models for cancer diagnosis. For more information about me, click the buttons below.
+							</h5>
 						</div>
 					</div>
 
-                    <div class="hero-ctas">
-						<a href="/path-to-cv.pdf" class="sticker-btn">CV</a>
-						<a href="https://linkedin.com/in/finnley-howald" class="sticker-btn">LinkedIn</a>
+                    <div class="sticker-grid">
+						<a href="/path-to-cv.pdf" target="_blank" class="sticker-disk">
+							<img src="/cv.png" alt="Download CV" />
+						</a>
+
+						<a href="https://linkedin.com/in/finnley-howald" target="_blank" class="sticker-disk">
+							<img src="/linked.png" alt="LinkedIn Profile" />
+						</a>
+
+						<a href="https://github.com/Finnley111" target="_blank" class="sticker-disk">
+							<img src="/git.png" alt="GitHub Profile" />
+						</a>
 					</div>
                 </div>
             </div>
         </section>
 
         <section id="work" class="section-pad">
-            <h2 class="text-center mb-10" style="font-size: 40px;">
-				<div class="ts">
-					<div class="tw">
-					<div class="mlvx-4 tc"><div>W</div></div><div class="mlvx-0 tc"><div>o</div></div><div class="mlvx-2 tc"><div>r</div></div><div class="mlvx-1 tc"><div>k</div></div>
-					</div>
-					<div class="tw ml-4">
-					<div class="mlvx-3 tc"><div>E</div></div><div class="mlvx-5 tc"><div>x</div></div><div class="mlvx-6 tc"><div>p</div></div><div class="mlvx-0 tc"><div>e</div></div><div class="mlvx-4 tc"><div>r</div></div><div class="mlvx-2 tc"><div>i</div></div><div class="mlvx-1 tc"><div>e</div></div><div class="mlvx-3 tc"><div>n</div></div><div class="mlvx-5 tc"><div>c</div></div><div class="mlvx-6 tc"><div>e</div></div>
-					</div>
-				</div>
-				</h2>
+			<h2 class="section-header-scrap">Work Experience</h2>
             <div class="experience-list">
 				<article class="experience-item work-card">
 					<div class="exp-visual">
@@ -95,7 +78,7 @@ import Sticker from '../components/Sticker.jsx';
 					<div class="exp-details">
 						<h3>Research Assistant @ Goodman Cancer Institute</h3>
 						<div class="descr-box clean-inset">
-							<p>Description of responsibilities goes here...</p>
+							<p>A computational pipeline that utilizes deep learning and manifold learning to map the continuous progression of biological states within complex tissue environments. Moving beyond traditional discrete classification, this framework identifies morphological trajectories that provide a more granular understanding of disease development.</p>
 						</div>
 					</div>
 				</article>
@@ -105,9 +88,9 @@ import Sticker from '../components/Sticker.jsx';
 						<img src="/rl_mouse.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
 					</div>
 					<div class="exp-details">
-						<h3>Research Assistant @ The Britt Lab - McGill</h3>
+						<h3>Research Assistant @  McGill University - The Britt Lab</h3>
 						<div class="descr-box clean-inset">
-							<p>Built various websites for local businesses...</p>
+							<p>Used Reinforcement Learning frameworks to simulate complex decision-making behaviours in mice, developing an end-to-end pipeline for data pre-processing and synthetic dataset generation. By applying statistical modeling and parameter recovery analysis, I evaluated how different algorithmic extensions captured biological learning rates and reward-based choice patterns to improve model interpretability.</p>
 						</div>
 					</div>
 				</article>
@@ -118,7 +101,7 @@ import Sticker from '../components/Sticker.jsx';
 					<div class="exp-details">
 						<h3>Research Assistant @ Goodman Cancer Institute</h3>
 						<div class="descr-box clean-inset">
-							<p>Built various websites for local businesses...</p>
+							<p>Developed biological models for breast cancer using Python and Compucell3D. Analyzed simulation results to aid in cancer research and sharing these findings with lab members.</p>
 						</div>
 					</div>
 				</article>
@@ -127,43 +110,38 @@ import Sticker from '../components/Sticker.jsx';
 
 
         <section id="projects" class="section-pad">
-            <h2 class="text-center mb-10" style="font-size: 40px;">
-				<div class="ts">
-					<div class="tw">
-					<div class="mlvx-2 tc"><div>P</div></div><div class="mlvx-4 tc"><div>r</div></div><div class="mlvx-0 tc"><div>o</div></div><div class="mlvx-6 tc"><div>j</div></div><div class="mlvx-1 tc"><div>e</div></div><div class="mlvx-3 tc"><div>c</div></div><div class="mlvx-5 tc"><div>t</div></div><div class="mlvx-0 tc"><div>s</div></div>
-					</div>
-				</div>
-				</h2>
+            <h2 class="section-header-white-scrap">Projects</h2>
             <div class="projects-grid">
-                <div class="project-card polaroid">
-                    <div style="height: 200px;">
-						<img src="/WaterScene.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
+                <div class="polaroid">
+                    <div>
+						<img src="/WaterScene.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover"/>
 					</div>
                 </div>
                 <div class="project-card polaroid">
-                    <div class="placeholder-visual" style="height: 200px;">Visual</div>
+                    <div>
+						<video 
+							src="/bunny.mp4" 
+							autoplay 
+							muted 
+							loop 
+							playsinline 
+							style="width: 100%; height: 100%; object-fit: cover;"
+						>
+							Your browser does not support the video tag.
+						</video>
+					</div>
                 </div>
                 <div class="project-card polaroid">
-                    <div class="placeholder-visual" style="height: 200px;">Visual</div>
+                    <div>
+						<img src="/confusion_matrix.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover"/>
+					</div>
                 </div>
             </div>
         </section>
 
 
         <section id="contact" class="section-pad">
-			<h2 class="text-center mb-10" style="font-size: 40px;">
-				<div class="ts">
-					<div class="tw">
-						<div class="mlvx-5 tc"><div>C</div></div>
-						<div class="mlvx-1 tc"><div>o</div></div>
-						<div class="mlvx-3 tc"><div>n</div></div>
-						<div class="mlvx-6 tc"><div>t</div></div>
-						<div class="mlvx-0 tc"><div>a</div></div>
-						<div class="mlvx-4 tc"><div>c</div></div>
-						<div class="mlvx-2 tc"><div>t</div></div>
-					</div>
-				</div>
-			</h2>
+			<h2 class="section-header-scrap">Contact</h2>
 
 			<div class="business-card">
 				<div class="card-content">
@@ -174,16 +152,14 @@ import Sticker from '../components/Sticker.jsx';
 					
 					<div class="card-body">
 						<div class="contact-item">
-							<span class="label">P:</span>
-							<span class="value">555-0192</span>
-						</div>
-						<div class="contact-item">
 							<span class="label">E:</span>
-							<span class="value">finnley.howald@gmail.com</span>
+							<span class="value">
+							<a href="https://linkedin.com/in/finnley-howald"  target="_blank"><strong>finnley.howald@gmail.com</strong></a></span>
 						</div>
 						<div class="contact-item">
-							<span class="label">W:</span>
-							<span class="value">linkedin.com/in/finnley-howald</span>
+							<span class="label">L:</span>
+							<span class="value">
+							<a href="https://linkedin.com/in/finnley-howald"  target="_blank"><strong>www.linkedin.com/in/finnley-howald</strong></a></span>
 						</div>
 					</div>
 				</div>

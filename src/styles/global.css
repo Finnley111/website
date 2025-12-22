@@ -7,10 +7,11 @@
 /* Imports hand-drawn and stylized fonts from Google Fonts for that scrapbook feel */
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Berkshire+Swash&family=Cabin:ital,wght@0,400..700;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Germania+One&family=Lobster&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&family=Rubik:ital,wght@0,300..900;1,300..900&family=Rye&display=swap');
 
+
 :root {
     /* Global Variables: Change these hex codes to update colors site-wide */
-    --font-heading: "Courier New", monospace;
-    --font-body: "Courier New", monospace;
+    --font-heading: Consolas, "Courier New", monospace;
+    --font-body: Consolas, "Courier New", monospace;
     --paper-color: #f2f3fc;  /* Warm off-white used for paper elements */
     --ink-color: #2c2c2c;    /* Dark charcoal color for main text */
     --ransom-color: #060606; /* Deep black for the "Ransom Note" letters */
@@ -49,19 +50,78 @@ body {
         linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
     background-size: 20px 20px; /* Change this to make the graph squares larger or smaller */
+    /* Hotspot 0 0: The very tip of the blue arrow */
+    cursor: url('/TomTom-indicator-normal3.png') 0 0, auto;
+}
+
+
+/* 2. LINK HAND (Floppy disks, Nav, Buttons) */
+a, 
+button, 
+.sticker-disk, 
+.sticker-btn, 
+.nav-label {
+    /* Hotspot 10 0: The tip of the pointing finger */
+    cursor: url('/TomTom-indicator-link2.png') 10 0, pointer;
+}
+
+/* 3. TEXT I-BEAM (Bio text or any inputs) */
+p, 
+h1, 
+h2, 
+h3, 
+input, 
+textarea {
+    /* Hotspot 16 16: The center of the I-beam (assuming 32x32 image) */
+    cursor: url('/TomTom-indicator-text3.png') 16 16, text;
 }
 
 h1, h2, h3, .sticker-btn {
     font-family: var(--font-heading);
-    text-transform: uppercase; /* Forces all headings to be CAPITALIZED */
+    /* text-transform: uppercase; Forces all headings to be CAPITALIZED */
 }
 
 h1 {
+    font-family: Consolas, Arial, Helvetica, sans-serif;
     padding-bottom: 1vh;
+    color: #006abb;
 }
+
+#Finnley {
+    background-color: #252d60;
+    /* background-color: #43a7ff; */
+    /* color: #e7e9ff; */
+    color: #c4c9ff;
+    /* color: #fffae9; */
+    padding: 8px 18px;
+    font-family: "Questrial";
+    display: inline-block;
+    font-weight: bold; /* 3D looks best on thicker letters */
+    
+    /* THE 3D EFFECT: Multiple layered shadows */
+    /* Each line represents 1px of depth */
+    text-shadow: 
+        1px 1px 0px #f824ff1c, 
+        2px 2px 0px #f824ff1c, 
+        3px 3px 0px #f824ff1c,
+        4px 4px 5px rgba(0,0,0,0.3); /* Final soft shadow for "lift" */
+
+    /* Rugged Edge & Interaction from previous step */
+    clip-path: polygon(2% 5%, 98% 2%, 99% 95%, 94% 98%, 4% 97%, 1% 40%);
+    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+    background-blend-mode: multiply;
+    transform: rotate(-1.5deg);
+    transition: all 0.3s ease;
+}
+
 
 h2 {
     padding-bottom: 0.5vh;
+    font-family: "Questrial", Consolas, "Courier New";
+    font-weight: 600;
+    font-size: 40px;
+
+    /* text-transform: uppercase;  */
 }
 
 h3 {
@@ -72,6 +132,11 @@ h3 {
 h4 {
     font-family: var(--font-body);
 }
+
+h5 {
+    font-size: larger;
+}
+
 
 .container {
     max-width: 1200px; /* Limits site width on giant monitors */
@@ -97,135 +162,14 @@ h4 {
     border-radius: 8px;
 }
 
-/* ==========================================================================
-   3. CONSOLIDATED RANSOMIZER LOGIC
-   ========================================================================== */
-/* Basic layout for the ransom note letters; they sit side-by-side */
-.ts, .tw, .tc { display: inline-block; }
 
-.ts { 
-    line-height: 1.1; 
-    word-spacing: 0.1em; /* Controls the space between whole words */
-}
-
-.tw {
-    display: flex;
-    flex-wrap: wrap; /* Allows name to break into two lines if the screen is too narrow */
-    gap: 2px;        /* Space between letters */
-}
-
-.tc {
-    display: inline-block;
-    margin: 1px; 
-}
-
-/* The actual letter container */
-.tc div { 
-    position: relative; 
-    padding: 0.1em 0.15em; /* Padding inside the paper cutout */
-    line-height: 1; 
-    transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-
-
-/* This creates the 'paper' behind the letter using a pseudo-element */
-.tc div::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1; /* Ensures the paper stays behind the ink */
-}
-
-.tc:hover div {
-    /* Straightens the letter and grows it slightly */
-    transform: rotate(5deg) scale(1.03) !important;
-    /* Optional: Makes the shadow a bit deeper when hovered */
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-    z-index: 10; /* Ensures the hovered letter stays on top of neighbors */
-    cursor: pointer;
-}
-
-/* INDIVIDUAL LETTER STYLES (0-6) 
-   - filter: Adds a shadow to the 'cutout'
-   - background-image: Pulls a paper texture from a URL
-   - clip-path: Defines the wobbly, hand-cut shape of the paper
-   - transform: rotate: Tilts the letter for a messy look
-*/
-.tc.mlvx-0 { filter: drop-shadow(-1px 1px 1px #666); }
-.tc.mlvx-0 div::before { background-image: url(https://www.ransomizer.com/img/texture/pwrAKPo.png); background-color: #0c8489; clip-path: polygon(7% 1%,95% 3%,100% 42%,93% 96%,4% 100%,0 79%); }
-.tc.mlvx-0 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(1deg); text-transform: uppercase; }
-
-/* ... Styles 1 through 6 follow the same logic with different shapes, colors, and rotations ... */
-.tc.mlvx-1 { filter: drop-shadow(1px -1px 1px #666); }
-.tc.mlvx-1 div::before { background-image: url(https://www.ransomizer.com/img/texture/6ILZOkO.png); background-color: #ce1126; clip-path: polygon(3% 4%,100% 5%,100% 37%,99% 95%,1% 100%,0 99%); }
-.tc.mlvx-1 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(-3deg); text-transform: lowercase; }
-
-.tc.mlvx-2 { filter: drop-shadow(1px 1px 1px #666); }
-.tc.mlvx-2 div::before { background-image: url(https://www.ransomizer.com/img/texture/omJifnt.png); background-color: #803f1d; clip-path: polygon(6% 0,95% 1%,100% 85%,94% 94%,4% 100%,0 77%); }
-.tc.mlvx-2 div { color: var(--ransom-color); font-family: 'Cabin', serif; transform: rotate(-2deg); font-style: italic; text-transform: uppercase; }
-
-.tc.mlvx-3 { filter: drop-shadow(1px -1px 1px #666); }
-.tc.mlvx-3 div::before { background-image: url(https://www.ransomizer.com/img/texture/Tg0fOcU.png); background-color: #f9aa51; clip-path: polygon(2% 6%,98% 0,100% 37%,97% 98%,6% 95%,0 8%); }
-.tc.mlvx-3 div { color: var(--ransom-color); font-family: 'Courier Prime', serif; transform: rotate(3deg); font-weight: bold; }
-
-.tc.mlvx-4 div::before { background-image: url(https://www.ransomizer.com/img/texture/jIHCf3i.png); background-color: #f8c83c; clip-path: polygon(5% 4%,100% 6%,100% 70%,97% 99%,1% 95%,0 60%); }
-.tc.mlvx-4 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(3deg); font-weight: bold; }
-
-.tc.mlvx-5 div::before { background-image: url(https://www.ransomizer.com/img/texture/1wxqouY.png); background-color: #d2a567; clip-path: polygon(0 1%,96% 6%,100% 14%,100% 94%,5% 93%,0 10%); }
-.tc.mlvx-5 div { color: var(--ransom-color); font-family: 'Rubik', serif; font-weight: bolder; }
-
-.tc.mlvx-6 { filter: drop-shadow(1px -1px 1px #666); }
-.tc.mlvx-6 div::before { background-image: url(https://www.ransomizer.com/img/texture/EXlM455.png); background-color: #717732; clip-path: polygon(1% 1%,93% 5%,100% 25%,97% 93%,3% 99%,0 6%); }
-.tc.mlvx-6 div { color: var(--ransom-color); font-family: 'Crimson Pro', serif; transform: rotate(-3deg); }
-
-/* ==========================================================================
-   4. SHARED SCRAPBOOK STYLES
-   ========================================================================== */
-/* The main 'Paper' card look used for Bio and Work items */
-.bio-scrap {
-    position: relative;
-    background: var(--paper-color); /* Uses your warm off-white  */
-    padding: 40px 30px;
-    margin: 20px 0;
-    transform: rotate(-1.5deg); /* Subtle scrapbook tilt */
-    
-    /* This creates the jagged "torn" edges at the top and bottom */
-    /* Based on the polygon logic from your snippet */
-    clip-path: polygon(
-        0% 2%, 5% 0%, 10% 3%, 15% 1%, 20% 4%, 25% 1%, 30% 3%, 35% 0%, 40% 2%, 45% 1%, 50% 4%, 55% 2%, 60% 4%, 65% 1%, 70% 3%, 75% 0%, 80% 2%, 85% 4%, 90% 1%, 95% 3%, 100% 1%, 
-        100% 98%, 95% 100%, 90% 97%, 85% 99%, 80% 96%, 75% 100%, 70% 97%, 65% 99%, 60% 96%, 55% 98%, 50% 96%, 45% 99%, 40% 97%, 35% 100%, 30% 97%, 25% 99%, 20% 96%, 15% 98%, 10% 96%, 5% 100%, 0% 98%
-    );
-    
-    /* Since clip-path cuts off standard box-shadows, we use drop-shadow on a parent or filter */
-    filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.15));
-    transition: transform 0.3s ease;
-
-    /* 1. Add the texture image */
-    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); 
-    
-    /* 2. Set the base color (this shows through the texture) */
-    background-color: var(--paper-color); 
-    
-    /* 3. This blend mode makes the texture "ink" into the color */
-    background-blend-mode: multiply;
-    
-    /* 4. Ensure the texture doesn't look tiled/repeated */
-    background-size: 400px; 
-    
-    /* 5. Add a subtle "grain" filter for extra graphics polish */
-    filter: drop-shadow(4px 6px 8px rgba(27, 27, 27, 0.15)) contrast(1.05) brightness(0.98);
-}
-
-/* .bio-scrap:hover {
-    transform: rotate(0deg) scale(1.02);
-} */
 
 .bio-content {
-    font-family: "Courier New", Courier, monospace; /* Your typewriter font choice  */
+    font-family: Consolas, "Courier Prime", Courier, monospace; /* Your typewriter font choice  */
     color: #333;
     line-height: 1.6;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .bio-content h3 {
@@ -236,7 +180,7 @@ h4 {
 }
 
 .bio-content strong {
-    background: rgba(0, 0, 0, 0.05); /* Subtle highlight for key terms */
+    /* background: rgba(0, 0, 0, 0.05); Subtle highlight for key terms */
     padding: 0 4px;
 }
 
@@ -248,7 +192,7 @@ h4 {
     /* Complex border-radius creates the wobbly 'hand-cut' perimeter */
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     box-shadow: var(--shadow-soft);
-    transform: rotate(-1deg); /* Slight tilt so it doesn't look like a perfect computer box */
+    transform: rotate(-1deg);
     transition: transform 0.3s ease; /* Smoothly straightens out when you hover */
 }
 
@@ -275,6 +219,7 @@ header { padding: 20px 0 0; }
 .torn-paper-header {
     width: 100%;
     background-image: url('/torn-paper.png');
+    background-blend-mode: hue;
     background-repeat: no-repeat;
     
     /* 1. ANCHOR TO BOTTOM: This ensures the ripped edge is the reference point */
@@ -295,30 +240,93 @@ header { padding: 20px 0 0; }
             drop-shadow(0 10px 12px rgba(0,0,0,0.08));
 }
 
-/* The buttons sitting on the torn paper */
-.nav-label {
-    display: inline-block;
-    text-decoration: none;
-    color: var(--ink-color);
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    padding: 4px 12px;
-    background: rgba(255, 255, 255, 0.4); /* Semi-transparent white backing */
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.nav-label:hover {
-    transform: rotate(-2deg) scale(1.1);
-    background: rgba(255, 255, 255, 0.9); /* Gets more solid on hover */
-}
-
 .scrap-nav ul {
     display: flex;
     justify-content: center;
     gap: clamp(1rem, 5vw, 5rem); /* Space between nav items shrinks on mobile */
     padding-top: clamp(20px, 2vh, 40px); /* Adjusts how far down the paper the buttons sit */
 }
+
+/* The buttons sitting on the torn paper */
+/* .nav-label {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--ink-color);
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    color: #060606;
+} */
+
+/* .nav-label:hover {
+    transform: rotate(-2deg) scale(1.1);
+    background: rgba(255, 255, 255, 0.9);
+    color: #060606;
+} */
+
+/* .nav-label {
+    display: inline-block;
+    text-decoration: underline;
+    color: #0000EE;
+    font-family: "Courier Prime", monospace; 
+    font-size: 1.2rem;
+    background: none; 
+    transition: color 0.2s ease;
+} */
+
+/* .nav-label:hover {
+    color: #551A8B;
+    background: transparent;
+    transform: translateY(-2px);
+} */
+
+.nav-label {
+    display: inline-block;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    padding: 10px 18px;
+    
+    /* Vintage Keycap Colors */
+    background: #e0e0e0; 
+    color: #444;
+    
+    /* The "Physical" Shape */
+    border-radius: 6px 6px 4px 4px;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    
+    /* 3D EXTRUSION: Layered shadows create the key's side walls */
+    box-shadow: 
+        0px 2px 0px #bbb,
+        0px 4px 0px #aaa,
+        0px 6px 0px #999,
+        0px 8px 10px rgba(0,0,0,0.3); /* The drop shadow on the paper */
+        
+    transition: all 0.1s ease;
+    position: relative;
+    top: 0;
+}
+
+/* THE "PRESS" EFFECT */
+.nav-label:active, .nav-label:hover {
+    /* Moves the key down to simulate a mechanical switch bottoming out */
+    top: 4px; 
+    box-shadow: 
+        0px 1px 0px #bbb,
+        0px 2px 0px #aaa,
+        0px 2px 5px rgba(0,0,0,0.2);
+    
+    /* Optional: Use your signature Teal for the text on hover */
+    color: #318282; 
+}
+ 
+ 
+
+
 
 .section-pad {
     padding-top: clamp(100px, 7vh, 250px);
@@ -380,20 +388,17 @@ header { padding: 20px 0 0; }
 }
 
 /* CLEANER INSET BOX (Optional) */
-/* .descr-box.clean-inset {
-    background: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 20px;
-    border-radius: 4px;
+.descr-box.clean-inset {
+    /* padding: 20px; */
     margin-top: 15px;
-} */
+}
 
 .business-card {
     width: 100%;
     max-width: 450px; /* Standard business card proportions */
     min-height: 250px;
     margin: 40px auto;
-    background: #fff; /* Crisp white cardstock */
+    background: #feffff; /* Crisp white cardstock */
     border: 1px solid #ddd;
     box-shadow: 4px 8px 20px rgba(0,0,0,0.1);
     transform: rotate(2deg);
@@ -405,7 +410,9 @@ header { padding: 20px 0 0; }
     transition: transform 0.3s ease;
     
     /* Give it a different "cardboard" texture than the bio scrap */
-    background-image: url('https://www.transparenttextures.com/patterns/white-diamond-dark.png');
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
+              url('https://www.transparenttextures.com/patterns/white-diamond-dark.png');
+    background-blend-mode:
 }
 
 /* .business-card:hover {
@@ -420,7 +427,7 @@ header { padding: 20px 0 0; }
 }
 
 .subtitle {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: #666;
     margin-bottom: 30px;
     text-transform: uppercase;
@@ -457,17 +464,6 @@ header { padding: 20px 0 0; }
     height: 400px;
     transform: rotate(2deg);
     overflow: hidden; /* Clips the photo into the wobbly paper shape */
-}
-
-/* The 'Wavy' underlines in the Bio section */
-.wavy-text-lines {
-    font-family: var(--font-body);
-    font-size: 1.3rem;
-    line-height: 2.5rem;
-    text-decoration-line: underline;
-    text-decoration-style: wavy;
-    text-decoration-color: #999;
-    text-underline-offset: 8px; /* Moves the wave further down from the text */
 }
 
 /* src/styles/global.css */
@@ -546,6 +542,43 @@ header { padding: 20px 0 0; }
     transform: rotate(-30deg) translateX(1.8rem);
 }
 
+/* --- FLOPPY DISK STICKER GRID --- */
+.sticker-grid {
+    display: flex;
+    gap: 50px;
+    margin-top: 30px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.sticker-disk {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+    filter: drop-shadow(6px 6px 2px rgba(0,0,0,0.15));
+}
+
+.sticker-disk img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* Optional: very slight rounding if the images aren't perfectly square */
+    border-radius: 4px;
+}
+
+/* Individual Rotations for the Scrapbook look */
+.sticker-disk:nth-child(1) { transform: rotate(-3deg); }
+.sticker-disk:nth-child(2) { transform: rotate(2deg); }
+.sticker-disk:nth-child(3) { transform: rotate(-1deg); }
+
+/* Hover Effect: Straightens out and "pops" up */
+.sticker-disk:hover {
+    transform: rotate(0deg) scale(1.01) translateY(-1px);
+    filter: drop-shadow(8px 12px 15px rgba(0,0,0,0.2));
+    z-index: 20;
+}
+
+
 /* WORK EXPERIENCE */
 .experience-list { display: flex; flex-direction: column; gap: 30px; }
 .experience-item { display: flex; flex-direction: column; gap: 20px; }
@@ -571,20 +604,115 @@ header { padding: 20px 0 0; }
 }
 
 /* Randomize polaroid rotations for variety */
-.polaroid:nth-child(odd) { --rotation: 2deg; }
+.polaroid:nth-child(odd) { --rotation: 3deg; }
 .polaroid:nth-child(even) { --rotation: -1.5deg; }
 
-.polaroid:hover {
+/* .polaroid:hover {
     transform: scale(1.05) rotate(0deg);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    z-index: 10; /* Ensures the hovered card overlaps others */
-}
+    z-index: 10;
+} */
 
 /* CONTACT SECTION */
 .contact-sheet { max-width: 600px; margin: 0 auto; transform: rotate(1deg); }
 .contact-row { display: flex; align-items: center; margin-bottom: 20px; font-size: 1.4rem; }
 .contact-row .label { flex-basis: 40%; text-align: right; padding-right: 20px; }
 .contact-row .value { flex-basis: 60%; position: relative; padding-bottom: 5px; }
+
+.value:hover{
+    color: #006abb;
+}
+
+/* --- 1. DEFAULT: THE BLUE PILL (Portrait / Mobile) --- */
+/* This triggers when the viewport height is greater than the width */
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color:#0b6d2c; /* The blue section */
+    border-radius: 10px; /* Rounded edges */
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+
+/* --- SECTION HEADER SCRAP --- */
+.section-header-scrap {
+    background-color: #252d60; /* Matching your name tag's lime green */
+    color: #c4c9ff;           /* Dark green ink */
+    /* background-color: #7ee6fb; */
+    /* color: #052549; */
+    padding: 10px 25px;
+    font-family: "Questrial", sans-serif; /* */
+    display: inline-block;
+    font-size: 2.2rem;
+    font-weight: bold;
+    
+    /* 1. RUGGED SECTION EDGE: A larger, slightly more irregular cut */
+    clip-path: polygon(
+        1% 3%, 96% 0%, 100% 95%, 92% 99%, 5% 96%, 0% 45%
+    );
+    
+    /* 2. PAPER TEXTURE */
+    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+    background-blend-mode: multiply;
+
+    /* 3. 3D TEXT EXTRUSION */
+    /* text-shadow: 
+        1px 1px 0px #154d0a, 
+        2px 2px 0px #154d0a,
+        3px 3px 5px rgba(0,0,0,0.2); */
+
+    /* 4. TILT & SHADOW */
+    transform: rotate(1.2deg);
+    filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.1));
+    margin-bottom: 20px;
+}
+
+/* --- WHITE SECTION HEADER SCRAP --- */
+.section-header-white-scrap {
+    background-color: #252d60; /* Off-white cardstock color */
+    color: #c4c9ff;           /* Dark charcoal ink */
+    padding: 10px 25px;
+    font-family: "Questrial", sans-serif;
+    display: inline-block;
+    font-size: 2.2rem;
+    font-weight: bold;
+    
+    /* 1. RUGGED EDGE: A slightly different cut than the green scrap */
+    clip-path: polygon(
+        2% 4%, 99% 1%, 97% 96%, 90% 100%, 3% 94%, 0% 50%
+    );
+    
+    /* 2. PAPER TEXTURE: Re-applying the cream paper grain */
+    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+    background-blend-mode: multiply;
+
+    /* 3. 3D TEXT EXTRUSION: Uses a medium gray for the depth */
+    /* text-shadow: 
+        1px 1px 0px #b0b0b0, 
+        2px 2px 0px #b0b0b0,
+        3px 3px 5px rgba(0,0,0,0.15); */
+
+    /* 4. TILT & SHADOW: A slight reverse tilt for variety */
+    transform: rotate(-1.2deg);
+    filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.1));
+    margin-bottom: 25px;
+}
+
+#Highlight {
+    background-color: #318282;
+    color: #ffffff;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
 
 /* ==========================================================================
    6. RESPONSIVE QUERIES (Desktop specific)
