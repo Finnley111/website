@@ -4,7 +4,8 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://finnley111.github.io',
-  base: '/',
+  /* THE FIX: Matches your repo name */
+  base: '/website/', 
   vite: {
     plugins: [tailwindv4()],
   },
