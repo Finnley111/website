@@ -2,7 +2,7 @@
    1. IMPORTS & CONFIGURATION
    ========================================================================== */
 /* Loads the Tailwind CSS engine for utility classes (like flex, p-4, etc.) */
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* Imports hand-drawn and stylized fonts from Google Fonts for that scrapbook feel */
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Berkshire+Swash&family=Cabin:ital,wght@0,400..700;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Germania+One&family=Lobster&family=Pacifico&family=Patrick+Hand&family=Permanent+Marker&family=Rubik:ital,wght@0,300..900;1,300..900&family=Rye&display=swap');
