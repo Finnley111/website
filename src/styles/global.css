@@ -219,7 +219,7 @@ header { padding: 0px 0 0; }
 
 .torn-paper-header {
     width: 100%;
-    background-image: url('/torn-paper.png');
+    background-image: url('/website/torn-paper.png');
     background-blend-mode: hue;
     background-repeat: no-repeat;
     
