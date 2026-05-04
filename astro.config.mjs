@@ -3,9 +3,8 @@ import tailwindv4 from '@tailwindcss/vite';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  site: 'https://finnley111.github.io',
-  /* THE FIX: Matches your repo name */
-  base: '/website/', 
+  site: 'https://finnleyhowald.com',
+  base: '/',
   vite: {
     plugins: [tailwindv4()],
   },
