@@ -320,8 +320,8 @@ shapeConfigs.forEach(cfg => {
 let smoothScroll = 0;
 let targetScroll = 0;
 let scrollVelocity = 0;
-const STIFFNESS = 0.008;
-const DAMPING   = 0.82;
+const STIFFNESS = 0.014;
+const DAMPING   = 0.84;
 
 window.addEventListener('scroll', () => { targetScroll = window.scrollY; }, { passive: true });
 
