@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Recurse \"C:\\\\Users\\\\finnl_y\\\\AppData\\\\Local\\\\Temp\\\\design_extract2\\\\finnley-portfolio\" | ForEach-Object { $_.FullName })",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(python -c ' *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

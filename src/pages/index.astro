@@ -1,182 +1,1012 @@
 ---
-import '../styles/global.css';
-import Sticker from '../components/Sticker.jsx';
 ---
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finnley Howald</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finnley Howald</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style is:global>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0b;
+      --fg: #ececec;
+      --line: rgba(255, 255, 255, 0.14);
+      --line-strong: rgba(255, 255, 255, 0.28);
+      --line-bright: rgba(255, 255, 255, 0.5);
+      --shadow-deep: rgba(0, 0, 0, 0.55);
+      --surface: rgba(255, 255, 255, 0.06);
+      --surface-2: rgba(255, 255, 255, 0.1);
+      --card-inner: #121212;
+      --sans: 'Questrial', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: 'Space Mono', 'Courier New', monospace;
+    }
+
+    ::selection {
+      background: #f0f0f0;
+      color: var(--bg);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #141414; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.22); border-radius: 0; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS (fixed, behind everything) ── */
+    #mesh-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 22px 32px;
+      z-index: 100;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 36px;
+    }
+
+    .nav-right a {
+      text-decoration: none;
+      color: var(--fg);
+      opacity: 0.58;
+      transition: opacity 0.2s;
+    }
+    .nav-right a:hover { opacity: 1; }
+    .nav-right a.active { opacity: 1; font-weight: 700; }
+
+    /* ── MAIN ── */
+    main {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ── SECTION BASE ── */
+    .section {
+      padding: 0 28px;
+      position: relative;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 28px 80px 72px;
+      position: relative;
+    }
+
+    /* Tagline wraps to the same width as the name (e.g. ends with Howald). */
+    .hero-copy {
+      display: grid;
+      grid-template-columns: max-content;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .hero-name {
+      font-family: var(--sans);
+      font-size: clamp(48px, 7.5vw, 108px);
+      font-weight: normal;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      grid-column: 1;
+    }
+
+    .hero-roles {
+      font-family: var(--sans);
+      font-size: clamp(18px, 2.8vw, 34px);
+      font-weight: normal;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      grid-column: 1;
+      width: 0;
+      min-width: 100%;
+    }
+
+    .hero-nowrap { white-space: nowrap; }
+
+    .hero-cta { margin-top: 56px; }
+
+    /* ── SCROLL INDICATOR ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+    }
+    .scroll-hint:hover { opacity: 1; }
+
+    .scroll-hint-arrow {
+      width: 36px;
+      height: 36px;
+      border-right: 2.5px solid #fff;
+      border-bottom: 2.5px solid #fff;
+      transform: rotate(45deg);
+      animation: hint-bob 1.6s ease-in-out infinite;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+    }
+
+    @keyframes hint-bob {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+      border-top: 1px solid var(--line);
+      padding: 10px 0;
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+      margin-bottom: 0;
+    }
+
+    /* ── EXPERIENCE IMAGES (card + caption bar) ── */
+    .exp-image-wrap {
+      margin-bottom: 0;
+      background: var(--card-inner);
+      border: 1px solid var(--line-strong);
+      overflow: hidden;
+      box-shadow:
+        0 4px 24px var(--shadow-deep),
+        0 0 0 1px rgba(255, 255, 255, 0.04);
+      transition: box-shadow 0.35s ease, transform 0.35s ease;
+    }
+    
+
+    .exp-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      background: var(--card-inner);
+      filter: contrast(1.02);
+      transition: filter 0.4s ease;
+    }
+    .exp-image-wrap:hover .exp-image { filter: contrast(1.06); }
+
+    .exp-image-caption {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      line-height: 1.55;
+      color: var(--fg);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 12px 14px;
+    }
+
+    /* ── EXPERIENCE SECTION ── */
+    #experience {
+      padding-top: 120px;
+      padding-bottom: 0;
+    }
+
+    .exp-entry {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) 280px minmax(0, 2.5fr);
+      gap: 48px;
+      padding: 32px;
+      margin-top: 16px;
+      margin-bottom: 0;
+      align-items: start;
+      background: var(--surface);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid var(--line);
+    }
+
+    .section-header + .exp-entry { margin-top: 36px; }
+
+    .exp-meta {
+      font-family: var(--mono);
+      font-size: 17px;
+      letter-spacing: 0.07em;
+      line-height: 1.75;
+    }
+
+    .exp-meta-label {
+      opacity: 0.45;
+      margin-bottom: 4px;
+      font-size: 14px;
+      letter-spacing: 0.11em;
+    }
+
+    .exp-meta-value { margin-bottom: 16px; }
+
+    /* Role value — larger, sans, full opacity */
+    .exp-meta > .exp-meta-label:first-child + .exp-meta-value {
+      font-family: var(--sans);
+      font-size: 20px;
+      line-height: 1.25;
+      opacity: 1;
+      letter-spacing: -0.01em;
+    }
+
+    /* Stack / Period labels and values — smaller and dimmer */
+    .exp-meta hr ~ .exp-meta-label {
+      font-size: 10px;
+    }
+    .exp-meta hr ~ .exp-meta-value {
+      font-size: 12px;
+      opacity: 0.65;
+    }
+
+    .exp-meta hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 12px 0;
+    }
+
+    .exp-description {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: normal;
+      line-height: 1.32;
+      letter-spacing: -0.01em;
+      align-self: start;
+      background: var(--surface-2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 24px 28px;
+      border-radius: 2px;
+    }
+
+    /* ── PROJECTS SECTION ── */
+    #projects {
+      padding-top: 120px;
+      padding-bottom: 120px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .project-card {
+      border: 1px solid var(--line-strong);
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .project-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      opacity: 0.55;
+    }
+
+    .project-canvas-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+
+    .project-canvas-wrap canvas { display: block; }
+
+    .project-canvas-wrap img,
+    .project-canvas-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-canvas-wrap--contain {
+      background: var(--card-inner);
+    }
+    .project-canvas-wrap--contain img {
+      object-fit: contain;
+    }
+
+    .project-card-bottom {
+      padding: 14px 14px 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .project-title {
+      font-family: var(--sans);
+      font-size: clamp(16px, 1.35vw, 24px);
+      font-weight: normal;
+      line-height: 1.18;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+      opacity: 0.75;
+      margin-bottom: 12px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .ptag {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--line-bright);
+      padding: 4px 8px;
+      opacity: 0.78;
+    }
+
+    .project-github {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--fg);
+      text-decoration: none;
+      border: 1px solid var(--line-bright);
+      padding: 7px 12px;
+      opacity: 0.85;
+      transition: background 0.2s ease, color 0.2s ease, opacity 0.2s;
+      background: transparent;
+    }
+    .project-github:hover {
+      background: var(--fg);
+      color: var(--bg);
+      opacity: 1;
+    }
+
+    /* ── CONTACT SECTION ── */
+    #contact {
+      padding-top: 100px;
+      padding-bottom: 0;
+    }
+
+    .contact-label {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+      border-top: 1px solid var(--line);
+      padding: 10px 0;
+      margin-bottom: 32px;
+    }
+
+    .contact-email {
+      font-family: var(--sans);
+      font-size: clamp(40px, 8vw, 130px);
+      font-weight: normal;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+      word-break: break-all;
+      text-decoration: none;
+      color: var(--fg);
+      display: block;
+      position: relative;
+      width: fit-content;
+    }
+    .contact-email::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--fg);
+      transition: width 0.4s ease;
+    }
+    .contact-email:hover::after { width: 100%; }
+    
+
+    .contact-sub {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+      max-width: 420px;
+      opacity: 0.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 120px;
+      border-top: 1px solid var(--line);
+      padding: 40px 28px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-col-label {
+      opacity: 0.4;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      margin-bottom: 12px;
+    }
+
+    .footer-col a, .footer-col p {
+      display: block;
+      text-decoration: none;
+      color: var(--fg);
+      line-height: 2.2;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .footer-col a:hover { opacity: 1; }
+
+    /* ── BUTTON ── */
+    .btn-mono {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: var(--bg);
+      background: var(--fg);
+      border: 1px solid var(--fg);
+      padding: 20px 40px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .btn-mono:hover { opacity: 0.88; }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1050px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      #hero { padding: 80px 24px 80px 24px; }
+      .exp-entry { grid-template-columns: 1fr; gap: 24px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<header class="torn-paper-header">
-    <nav class="scrap-nav">
-        <ul class="flex justify-center gap-10 pt-12">
-            <li><a href="#work" class="nav-label">Work</a></li>
-            <li><a href="#projects" class="nav-label">Projects</a></li>
-            <li><a href="#contact" class="nav-label">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<canvas id="mesh-canvas"></canvas>
 
-    <main class="container">
-        <section id="hero" class="hero-section">
-            <div class="hero-grid">
-				<div class="polaroid">
-					<img src="/website/finnley4.jpg" alt="Finnley Howald" style="width: 100%; height: auto; object-fit: cover;" />
-					
-			</div>
+<!-- NAV -->
+<nav>
+  <div class="nav-right">
+    <a href="#experience">WORK EXPERIENCE</a>
+    <a href="#projects">PROJECTS</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+</nav>
 
-                <div class="hero-content">
-                    <h1 class="w-full"">
-						<div>
-							<span id="Finnley">Finnley Howald</span>
-						</div>
-						</h1>
-                    <div class="bio-box">
-						<div class="bio-content">
-							<h5>
-								Hello! I'm Finnley, a Computer Science student at McGill University. My interests include Visual Computing, Computational Biology, and AI. For more information about me, click the buttons below.
-							</h5>
-						</div>
-					</div>
+<main>
 
-                    <div class="sticker-grid">
-						<a href="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/Finnley111/website/main/public/CV_Finnley_Howald.pdf&embedded=true" target="_blank" class="sticker-disk">
-							<img src="/website/cv.png" alt="Download CV" />
-						</a>
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="hero-copy">
+      <div class="hero-name">Finnley Howald</div>
+      <div class="hero-roles">
+        Visual computing at the intersection of <span class="hero-nowrap">real-time</span> graphics, machine learning &amp; computational biology
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a href="/website/CV_Finnley_Howald.pdf" target="_blank" class="btn-mono">DOWNLOAD CV</a>
+    </div>
+    <a href="#experience" class="scroll-hint" aria-label="Scroll to work experience">
+      <span>SCROLL</span>
+      <span class="scroll-hint-arrow"></span>
+    </a>
+  </section>
 
-						<a href="https://linkedin.com/in/finnley-howald" target="_blank" class="sticker-disk">
-							<img src="/website/linked.png" alt="LinkedIn Profile" />
-						</a>
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience" class="section">
+    <div class="section-header fade-in">
+      <span>WORK EXPERIENCE</span>
+    </div>
 
-						<a href="https://github.com/Finnley111" target="_blank" class="sticker-disk">
-							<img src="/website/git.png" alt="GitHub Profile" />
-						</a>
-					</div>
-                </div>
-            </div>
-        </section>
+    <div class="exp-entry fade-in">
+      <div class="exp-image-wrap">
+        <img class="exp-image" src="/website/manifold_3d.png" alt="Manifold learning visualization" />
+        <div class="exp-image-caption">
+          Manifold visualization of morphological trajectories across high-dimensional biological state space.
+        </div>
+      </div>
+      <div class="exp-meta">
+        <div class="exp-meta-label">ROLE</div>
+        <div class="exp-meta-value">Research Assistant<br />Goodman Cancer Institute — McCaffrey Lab</div>
+        <hr />
+        <div class="exp-meta-label">STACK</div>
+        <div class="exp-meta-value">Python<br />OpenCV<br />scanpy<br />scikit-learn<br />SLURM</div>
+      </div>
+      <div class="exp-description">
+        Built a machine learning pipeline to map cancer progression trajectories from whole-slide histopathology images. Combines deep learning tissue embeddings (Phikon) with diffusion pseudotime analysis to construct a spatial reference atlas showing how breast cancer morphology evolves within and across patient samples.
+      </div>
+    </div>
 
-        <section id="work" class="section-pad">
-			<h2 class="section-header-scrap">Work Experience</h2>
-            <div class="experience-list">
-				<article class="experience-item work-card">
-					<div class="exp-visual">
-						<img src="/website/manifold_3d.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
-					</div>
-					<div class="exp-details">
-						<h3>Research Assistant @ Goodman Cancer Institute</h3>
-						<div class="descr-box clean-inset">
-							<p>A computational pipeline that utilizes deep learning and manifold learning to map the continuous progression of biological states within complex tissue environments. Moving beyond traditional discrete classification, this framework identifies morphological trajectories that provide a more granular understanding of disease development.</p>
-						</div>
-					</div>
-				</article>
+    <div class="exp-entry fade-in">
+      <div class="exp-image-wrap">
+        <img class="exp-image" src="/website/rl_mouse.png" alt="Reinforcement learning mouse behaviour" />
+        <div class="exp-image-caption">
+          RL simulation traces and choice dynamics used to benchmark learning algorithms against synthetic behaviour.
+        </div>
+      </div>
+      <div class="exp-meta">
+        <div class="exp-meta-label">ROLE</div>
+        <div class="exp-meta-value">Research Assistant<br />McGill University — The Britt Lab</div>
+        <hr />
+        <div class="exp-meta-label">STACK</div>
+        <div class="exp-meta-value">Python<br />NumPy<br />SciPy<br />Pandas</div>
+      </div>
+      <div class="exp-description">
+        Implemented and benchmarked RL models (Q-Learning, Double Q, Choice Kernel, Forgetting) for probabilistic choice in mice, with a Python pipeline for cleaning, simulation, and synthetic datasets, plus hyperparameter tuning to improve fit quality and parameter recovery (Double Q + Forgetting strongest).
+      </div>
+    </div>
+  </section>
 
-				<article class="experience-item work-card">
-					<div class="exp-visual">
-						<img src="/website/rl_mouse.png" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
-					</div>
-					<div class="exp-details">
-						<h3>Research Assistant @  McGill University - The Britt Lab</h3>
-						<div class="descr-box clean-inset">
-							<p>Used Reinforcement Learning frameworks to simulate complex decision-making behaviours in mice, developing an end-to-end pipeline for data pre-processing and synthetic dataset generation. By applying statistical modeling and parameter recovery analysis, I evaluated how different algorithmic extensions captured biological learning rates and reward-based choice patterns to improve model interpretability.</p>
-						</div>
-					</div>
-				</article>
+  <!-- ═══ PROJECTS ═══ -->
+  <section id="projects" class="section">
+    <div class="section-header fade-in">
+      <span>PROJECTS</span>
+    </div>
 
-				<article class="experience-item work-card">
-					<div class="exp-visual">
-						<img src="/website/cc3dpreview4.gif" alt="Manifold 3D Visualization" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" /></div>
-					<div class="exp-details">
-						<h3>Research Assistant @ Goodman Cancer Institute</h3>
-						<div class="descr-box clean-inset">
-							<p>Developed biological models for breast cancer using Python and Compucell3D. Analyzed simulation results to aid in cancer research and sharing these findings with lab members.</p>
-						</div>
-					</div>
-				</article>
-			</div>
-        </section>
+    <div class="projects-grid">
 
+      <div class="project-card fade-in">
+        <div class="project-card-top">
+          <span>PRJ_01</span>
+          <span></span>
+        </div>
+        <div class="project-canvas-wrap">
+          <img src="/website/WaterScene.png" alt="Ray traced water scene" />
+        </div>
+        <div class="project-card-bottom">
+          <div class="project-title">Ray Tracer using Taichi</div>
+          <div class="project-desc">A ray tracer built using the Taichi programming language, rendering physically accurate reflections, shadows and lighting across complex 3D scenes.</div>
+          <div class="project-tags">
+            <span class="ptag">TAICHI</span>
+            <span class="ptag">PYTHON</span>
+            <span class="ptag">RAY TRACING</span>
+          </div>
+          <!-- <a href="https://github.com/Finnley111" target="_blank" class="project-github">↗ GITHUB</a> -->
+        </div>
+      </div>
 
-        <section id="projects" class="section-pad">
-            <h2 class="section-header-white-scrap">Projects</h2>
-            <div class="projects-grid masonry-grid max-w-4xl mx-auto">
-            <div class="project-card polaroid">
-				<div class="polaroid-container">
-					<img src="/website/WaterScene.png" alt="Manifold 3D Visualization" class="polaroid-img"/>
-					<p class="polaroid-caption">Ray tracer using Taichi.</p>
-				</div>
-				</div>
-                <div class="project-card polaroid">
-			<div class="polaroid-container">
-				<video 
-					src="/website/bunny.mp4" 
-					autoplay 
-					muted 
-					loop 
-					playsinline 
-					class="polaroid-img"
-					style="object-fit: cover;"
-				>
-					Your browser does not support the video tag.
-				</video>
-				<p class="polaroid-caption">
-					Mesh simplification using quadratic error.
-				</p>
-			</div>
-		</div>
+      <div class="project-card fade-in">
+        <div class="project-card-top">
+          <span>PRJ_02</span>
+          <span></span>
+        </div>
+        <div class="project-canvas-wrap">
+          <video src="/website/bunny.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="project-card-bottom">
+          <div class="project-title">Mesh Simplification using Quadratic Error</div>
+          <div class="project-desc">Implementation of the quadratic error metrics algorithm for progressive mesh simplification, preserving visual fidelity while drastically reducing polygon count.</div>
+          <div class="project-tags">
+            <span class="ptag">PYTHON</span>
+            <span class="ptag">GEOMETRY</span>
+          </div>
+          <!-- <a href="https://github.com/Finnley111" target="_blank" class="project-github">↗ GITHUB</a> -->
+        </div>
+      </div>
 
-		<div class="project-card polaroid">
-			<div class="polaroid-container">
-				<img 
-					src="/website/confusion_matrix.png" 
-					alt="ML Model Validation" 
-					class="polaroid-img"
-					style="object-fit: cover;"
-				/>
-				<p class="polaroid-caption">
-					Benchmarking scratch-built MLPs against CNNs on medical image classification.
-				</p>
-			</div>
-		</div>
-            </div>
-        </section>
+      <div class="project-card fade-in">
+        <div class="project-card-top">
+          <span>PRJ_03</span>
+          <span></span>
+        </div>
+        <div class="project-canvas-wrap project-canvas-wrap--contain">
+          <img src="/website/confusion_matrix.png" alt="Confusion matrix for MLP vs CNN benchmark" />
+        </div>
+        <div class="project-card-bottom">
+          <div class="project-title">Benchmarking MLPs vs CNNs on Medical Images</div>
+          <div class="project-desc">Benchmarking scratch-built multilayer perceptrons against convolutional neural networks on medical image classification tasks, evaluating accuracy, convergence and generalization.</div>
+          <div class="project-tags">
+            <span class="ptag">PYTHON</span>
+            <span class="ptag">PYTORCH</span>
+            <span class="ptag">MACHINE LEARNING</span>
+          </div>
+          <!-- <a href="https://github.com/Finnley111" target="_blank" class="project-github">↗ GITHUB</a> -->
+        </div>
+      </div>
 
+      <div class="project-card fade-in">
+        <div class="project-card-top">
+          <span>PRJ_04</span>
+          <span></span>
+        </div>
+        <div class="project-canvas-wrap">
+          <img src="/website/cc3dpreview4.gif" alt="Breast cancer cell simulation" />
+        </div>
+        <div class="project-card-bottom">
+          <div class="project-title">Biological Breast Cancer Simulation</div>
+          <div class="project-desc">Developed biological models for breast cancer using Python and Compucell3D. Analyzed simulation results to aid in cancer research and shared findings with lab members.</div>
+          <div class="project-tags">
+            <span class="ptag">PYTHON</span>
+            <span class="ptag">COMPUCELL3D</span>
+            <span class="ptag">BIOLOGY</span>
+          </div>
+          <!-- <a href="https://github.com/Finnley111" target="_blank" class="project-github">↗ GITHUB</a> -->
+        </div>
+      </div>
 
-        <section id="contact" class="section-pad">
-			<h2 class="section-header-scrap">Contact</h2>
+    </div>
+  </section>
 
-			<div class="business-card">
-				<div class="card-content">
-					<div class="card-header">
-						<h3>Finnley Howald</h3>
-						<p class="subtitle">Computer Science @ McGill</p>
-					</div>
-					
-					<div class="card-body">
-						<div class="contact-item">
-							<span class="label">E:</span>
-							<span class="value">
-							<a href="mailto:finnley.howald@gmail.com"  target="_blank"><strong>finnley.howald@gmail.com</strong></a></span>
-						</div>
-						<div class="contact-item">
-							<span class="label">L:</span>
-							<span class="value">
-							<a href="https://linkedin.com/in/finnley-howald"  target="_blank"><strong>www.linkedin.com/in/finnley-howald</strong></a></span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-    </main>
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact" class="section">
+    <div class="contact-label fade-in">GET IN TOUCH</div>
+    <a href="mailto:finnley.howald@gmail.com" class="contact-email fade-in">finnley.howald@gmail.com</a>
+    <div class="contact-sub fade-in">Master's of Visual Computing @ Simon Fraser University & B.Sc of Computer Science @ McGill University. Currently accepting inquiries for collaborative research, internships, and opportunities at the intersection of computer graphics, machine learning and biological simulation.</div>
+
+    <footer>
+      <div class="footer-col">
+        <div class="footer-col-label">LINKS</div>
+        <a href="https://github.com/Finnley111" target="_blank">GITHUB</a>
+        <a href="https://www.linkedin.com/in/finnley-howald" target="_blank">LINKEDIN</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">FILES</div>
+        <a href="/website/CV_Finnley_Howald.pdf" target="_blank">DOWNLOAD CV</a>
+        <a href="mailto:finnley.howald@gmail.com">EMAIL</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">INFO</div>
+        <p>© 2026 Finnley Howald</p>
+        <p>Master's of Visual Computing @ Simon Fraser University</p>
+        <p>B.Sc of Computer Science @ McGill</p>
+      </div>
+    </footer>
+  </section>
+
+</main>
+
+<script>
+import * as THREE from 'three';
+
+// ══════════════════════════════════════════════════════════
+//  BACKGROUND WIRE MESH SCENE — fixed, full-viewport
+// ══════════════════════════════════════════════════════════
+
+const bgCanvas = document.getElementById('mesh-canvas');
+const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+bgRenderer.setSize(window.innerWidth, window.innerHeight);
+bgRenderer.setClearColor(0x000000, 0);
+
+const bgScene = new THREE.Scene();
+const bgCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+bgCamera.position.z = 10;
+
+const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.22 });
+
+function wireShape(geo) {
+  const edges = new THREE.EdgesGeometry(geo);
+  return new THREE.LineSegments(edges, lineMat.clone());
+}
+
+const bgShapes = [];
+
+const geoPool = () => {
+  const pick = Math.floor(Math.random() * 3);
+  const size = 0.7 + Math.random() * 1.2;
+  if (pick === 0) return new THREE.IcosahedronGeometry(size, 0);
+  if (pick === 1) return new THREE.OctahedronGeometry(size, 0);
+  return new THREE.TetrahedronGeometry(size, 0);
+};
+
+const shapeConfigs = [
+  // Hero zone — varied depths for strong parallax
+  { x: -4.5, baseY: 4.0,   z: -0.5, pf: 1.00 },
+  { x:  3.0, baseY: 3.5,   z: -4.0, pf: 0.35 },
+  { x:  1.0, baseY: -1.0,  z: -0.8, pf: 0.95 },
+  { x:  5.0, baseY: 1.5,   z: -6.0, pf: 0.20 },
+  { x: -2.5, baseY: -2.0,  z: -2.5, pf: 0.60 },
+  { x:  0.0, baseY: 5.5,   z: -3.5, pf: 0.42 },
+  { x: -1.5, baseY: 2.0,   z: -0.5, pf: 1.00 },
+  { x:  4.0, baseY: -2.5,  z: -5.0, pf: 0.28 },
+  { x:  2.5, baseY: 3.0,   z: -1.5, pf: 0.80 },
+  { x: -3.5, baseY: 0.5,   z: -7.0, pf: 0.15 },
+  // Mid page
+  { x: -3.0, baseY: -4.0,  z: -1.0, pf: 0.92 },
+  { x:  2.0, baseY: -5.5,  z: -5.0, pf: 0.30 },
+  { x: -0.5, baseY: -7.0,  z: -2.0, pf: 0.72 },
+  { x:  4.5, baseY: -8.0,  z: -6.0, pf: 0.18 },
+  { x: -3.5, baseY: -9.0,  z: -0.8, pf: 0.96 },
+  { x:  1.5, baseY: -10.5, z: -3.5, pf: 0.45 },
+  { x: -4.0, baseY: -12,   z: -2.0, pf: 0.68 },
+  { x:  3.5, baseY: -13,   z: -5.5, pf: 0.24 },
+  { x:  0.5, baseY: -11,   z: -1.0, pf: 0.90 },
+  { x: -2.0, baseY: -14,   z: -7.0, pf: 0.12 },
+  // Lower page
+  { x: -1.0, baseY: -15,   z: -1.5, pf: 0.85 },
+  { x:  3.0, baseY: -16.5, z: -4.0, pf: 0.38 },
+  { x: -3.5, baseY: -18,   z: -0.5, pf: 1.00 },
+  { x:  1.5, baseY: -19,   z: -6.0, pf: 0.20 },
+  { x: -0.5, baseY: -20.5, z: -2.5, pf: 0.62 },
+  { x:  4.0, baseY: -22,   z: -1.0, pf: 0.88 },
+  { x: -2.5, baseY: -23,   z: -5.0, pf: 0.30 },
+  { x:  2.0, baseY: -24.5, z: -3.0, pf: 0.55 },
+  { x: -4.0, baseY: -26,   z: -7.0, pf: 0.14 },
+  { x:  1.0, baseY: -27,   z: -1.5, pf: 0.82 },
+  // Projects zone
+  { x:  3.5, baseY: -29,   z: -2.0, pf: 0.70 },
+  { x: -2.0, baseY: -30,   z: -5.5, pf: 0.25 },
+  { x:  0.5, baseY: -31.5, z: -0.8, pf: 0.95 },
+  { x: -4.5, baseY: -32,   z: -3.5, pf: 0.48 },
+  { x:  2.5, baseY: -33.5, z: -6.5, pf: 0.18 },
+  { x: -1.0, baseY: -35,   z: -1.5, pf: 0.78 },
+  { x:  4.5, baseY: -36,   z: -4.0, pf: 0.35 },
+  { x: -3.0, baseY: -37.5, z: -0.5, pf: 1.00 },
+  { x:  1.5, baseY: -38.5, z: -2.5, pf: 0.60 },
+  { x: -0.5, baseY: -40,   z: -7.0, pf: 0.12 },
+  // Contact / footer zone
+  { x:  3.0, baseY: -41.5, z: -1.0, pf: 0.90 },
+  { x: -4.0, baseY: -43,   z: -5.0, pf: 0.28 },
+  { x:  0.0, baseY: -44,   z: -2.0, pf: 0.72 },
+  { x: -2.5, baseY: -45.5, z: -0.8, pf: 0.96 },
+  { x:  4.0, baseY: -47,   z: -6.0, pf: 0.20 },
+  { x: -1.5, baseY: -48,   z: -3.0, pf: 0.52 },
+  { x:  2.5, baseY: -49.5, z: -1.5, pf: 0.85 },
+  { x: -3.5, baseY: -51,   z: -5.5, pf: 0.22 },
+  { x:  1.0, baseY: -52,   z: -2.5, pf: 0.65 },
+  { x: -0.5, baseY: -53.5, z: -7.0, pf: 0.15 },
+];
+
+shapeConfigs.forEach(cfg => {
+  const mesh = wireShape(geoPool());
+  mesh.position.set(cfg.x, cfg.baseY, cfg.z);
+  mesh.rotation.x = Math.random() * Math.PI * 2;
+  mesh.rotation.y = Math.random() * Math.PI * 2;
+  const speed = 0.0006 + Math.random() * 0.0008;
+  mesh.userData = {
+    sx: (Math.random() - 0.5) * speed * 2,
+    sy: (Math.random() - 0.5) * speed * 2,
+    sz: (Math.random() - 0.5) * speed,
+    baseY: cfg.baseY,
+    pf: cfg.pf,
+  };
+  bgScene.add(mesh);
+  bgShapes.push(mesh);
+});
+
+// ── SCROLL PHYSICS ──
+let smoothScroll = 0;
+let targetScroll = 0;
+let scrollVelocity = 0;
+const STIFFNESS = 0.008;
+const DAMPING   = 0.82;
+
+window.addEventListener('scroll', () => { targetScroll = window.scrollY; }, { passive: true });
+
+// ── ANIMATION LOOP ──
+function bgAnimate() {
+  requestAnimationFrame(bgAnimate);
+
+  const diff = targetScroll - smoothScroll;
+  scrollVelocity += diff * STIFFNESS;
+  scrollVelocity *= DAMPING;
+  smoothScroll += scrollVelocity;
+
+  const vpHeight = window.innerHeight;
+  const worldUnitsPerPx = 8 / vpHeight;
+
+  bgShapes.forEach(m => {
+    m.rotation.x += m.userData.sx;
+    m.rotation.y += m.userData.sy;
+    m.rotation.z += m.userData.sz;
+    const offset = smoothScroll * worldUnitsPerPx * m.userData.pf;
+    m.position.y = m.userData.baseY + offset;
+  });
+
+  bgRenderer.render(bgScene, bgCamera);
+}
+bgAnimate();
+
+window.addEventListener('resize', () => {
+  bgCamera.aspect = window.innerWidth / window.innerHeight;
+  bgCamera.updateProjectionMatrix();
+  bgRenderer.setSize(window.innerWidth, window.innerHeight);
+}, { passive: true });
+
+// ══════════════════════════════════════════════════════════
+//  PROJECT CARD CANVASES — individual spinning shapes
+// ══════════════════════════════════════════════════════════
+
+function initProjectCanvas(canvas) {
+  const shape = canvas.dataset.shape;
+  const w = canvas.clientWidth  || 400;
+  const h = canvas.clientHeight || 300;
+  canvas.width  = w * Math.min(window.devicePixelRatio, 2);
+  canvas.height = h * Math.min(window.devicePixelRatio, 2);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+  camera.position.z = 4;
+
+  const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.48 });
+
+  let geo;
+  if (shape === 'cube')        geo = makeCubeWithDiags();
+  else if (shape === 'cube2')  geo = makeCube();
+  else if (shape === 'tetra')  geo = new THREE.EdgesGeometry(new THREE.TetrahedronGeometry(1.1, 0));
+  else if (shape === 'diamond') geo = makeDiamond();
+  else                          geo = new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.0, 0));
+
+  const mesh = new THREE.LineSegments(geo, mat);
+  scene.add(mesh);
+
+  let animId;
+  function loop() {
+    animId = requestAnimationFrame(loop);
+    mesh.rotation.x += 0.001;
+    mesh.rotation.y += 0.0015;
+    renderer.render(scene, camera);
+  }
+  loop();
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) loop();
+    else cancelAnimationFrame(animId);
+  });
+  obs.observe(canvas);
+}
+
+function makeCubeWithDiags() {
+  const s = 1.0;
+  const c = [
+    [-s,-s,-s],[s,-s,-s],[s,s,-s],[-s,s,-s],
+    [-s,-s,s],[s,-s,s],[s,s,s],[-s,s,s]
+  ];
+  const pts = [];
+  [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].forEach(([a,b]) => {
+    pts.push(new THREE.Vector3(...c[a]), new THREE.Vector3(...c[b]));
+  });
+  [[0,2],[1,3],[4,6],[5,7],[0,5],[1,4],[2,7],[3,6]].forEach(([a,b]) => {
+    pts.push(new THREE.Vector3(...c[a]), new THREE.Vector3(...c[b]));
+  });
+  return new THREE.BufferGeometry().setFromPoints(pts);
+}
+
+function makeCube() {
+  const s = 1.0;
+  const c = [
+    [-s,-s,-s],[s,-s,-s],[s,s,-s],[-s,s,-s],
+    [-s,-s,s],[s,-s,s],[s,s,s],[-s,s,s]
+  ];
+  const pts = [];
+  [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]].forEach(([a,b]) => {
+    pts.push(new THREE.Vector3(...c[a]), new THREE.Vector3(...c[b]));
+  });
+  return new THREE.BufferGeometry().setFromPoints(pts);
+}
+
+function makeDiamond() {
+  const p = [
+    [0, 1.4, 0], [0, -1.4, 0],
+    [1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1]
+  ];
+  const pts = [];
+  [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[4,3],[3,5],[5,2]].forEach(([a,b]) => {
+    pts.push(new THREE.Vector3(...p[a]), new THREE.Vector3(...p[b]));
+  });
+  return new THREE.BufferGeometry().setFromPoints(pts);
+}
+
+setTimeout(() => {
+  document.querySelectorAll('.proj-canvas').forEach(initProjectCanvas);
+}, 100);
+
+// ── ACTIVE NAV ──
+const navLinks = document.querySelectorAll('.nav-right a');
+const sections = ['hero', 'experience', 'projects', 'contact'].map(id => document.getElementById(id));
+
+function updateActiveNav() {
+  const scrollMid = window.scrollY + window.innerHeight * 0.4;
+  let active = sections[0];
+  sections.forEach(sec => {
+    if (sec && sec.offsetTop <= scrollMid) active = sec;
+  });
+  navLinks.forEach(a => {
+    const href = a.getAttribute('href').replace('#', '');
+    a.classList.toggle('active', !!(active && active.id === href));
+  });
+}
+
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+
+// ── FADE IN ON SCROLL ──
+const fadeEls = document.querySelectorAll('.fade-in');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+fadeEls.forEach(el => io.observe(el));
+</script>
+
 </body>
 </html>
